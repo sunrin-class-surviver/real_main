@@ -60,7 +60,7 @@ public class Stage1Script : MonoBehaviour
         StartCoroutine(GenerateVerticalLine());
     }
 
-    // 수정된 DropBulletDown 코루틴
+    // 수정된 DropBulletDown 코루틴 
     IEnumerator DropBulletDown(GameObject bullet, float delay)
     {
         yield return new WaitForSeconds(delay + fallInterval);
