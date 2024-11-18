@@ -9,7 +9,9 @@ public class Stage1Script : MonoBehaviour
     public Transform spawnPoint;
     public float moveInterval = 0.1f;
     public float fallInterval = 0.5f;
-    public float moveSpeed = 1f;
+    public float moveSpeedVertical = 1f;
+
+    public float moveSpeedHorizental = 2f;
     public int bulletCount = 10;
     public float fallDistance = 10f;
 
@@ -72,7 +74,10 @@ public class Stage1Script : MonoBehaviour
             rb = bullet.AddComponent<Rigidbody2D>();
         }
 
-        rb.gravityScale = 1f;
+        rb.gravityScale = 1f; // 기본 중력 효과 적용
+
+        // 추가: 아래로 떨어지는 초기 속도 설정
+        rb.velocity = new Vector2(0f, -5f); // X축 속도는 0, Y축으로 -5의 속도
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -105,7 +110,7 @@ IEnumerator GenerateVerticalLine()
     {
         int index = order[i]; // 랜덤 순서에 따라 번호를 가져옴
         GameObject bullet = bulletPool.GetObject();
-        
+         
         // Bullet의 위치 설정
         bullet.transform.position = rightEdgeWorld + Vector3.down * i; // 화면 오른쪽 끝에서 아래로 내려가면서 위치 설정
         
@@ -123,7 +128,7 @@ IEnumerator GenerateVerticalLine()
     foreach (GameObject bullet in currentBullets)
     {
         // 이미 생성된 총알들을 이동시키기
-        StartCoroutine(MoveBulletRight(bullet));
+        StartCoroutine(MoveBulletLeft(bullet));
     }
 
     // 세로줄이 다 생성되면 반복
@@ -134,20 +139,19 @@ IEnumerator GenerateVerticalLine()
 
 
     // 세로줄 탄막이 오른쪽으로 이동하는 코루틴
-    IEnumerator MoveBulletRight(GameObject bullet)
+    IEnumerator MoveBulletLeft(GameObject bullet)
+{
+    yield return new WaitForSeconds(fallInterval);
+
+    // Y축 값 유지, X축 값만 이동 (왼쪽 방향)
+    Vector3 targetPosition = bullet.transform.position + Vector3.left * fallDistance;
+
+    while (bullet.transform.position != targetPosition)
     {
-        yield return new WaitForSeconds(fallInterval);
-
-        // 랜덤한 Y 위치로 오른쪽으로 이동
-        float randomYPosition = Random.Range(0, 5f); // Y축을 랜덤으로 설정
-        Vector3 targetPosition = bullet.transform.position - Vector3.right * fallDistance + Vector3.up * randomYPosition;
-
-        while (bullet.transform.position != targetPosition)
-        {
-            bullet.transform.position = Vector3.MoveTowards(bullet.transform.position, targetPosition, moveSpeed * Time.deltaTime);
-            yield return null;
-        }
+        bullet.transform.position = Vector3.MoveTowards(bullet.transform.position, targetPosition, moveSpeedHorizental * Time.deltaTime);
+        yield return null;
     }
+}
 
     // 리스트를 랜덤으로 섞는 함수
     void Shuffle(List<int> list)
