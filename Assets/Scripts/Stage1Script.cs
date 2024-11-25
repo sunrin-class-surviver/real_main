@@ -13,6 +13,8 @@ public class Stage1Script : MonoBehaviour
     public int bulletCount = 10;
     public float fallDistance = 10f;
 
+
+    private bool isGenerating = false;
     private Vector3 horizontalStartPosition;
     private Vector3 verticalStartPosition;
     private ObjectPool bulletPool;
@@ -198,6 +200,9 @@ public class Stage1Script : MonoBehaviour
 
     IEnumerator GenerateVerticalLeftLine()
     {
+
+        if (isGenerating) yield break; // 이미 실행 중이라면 종료
+        isGenerating = true;
         currentBullets.Clear();
 
         // 세로로 총알을 일정 간격으로 생성
@@ -319,14 +324,17 @@ public class ObjectPool
         {
             GameObject bullet = bulletPool.Dequeue();
             bullet.SetActive(true);
+            Debug.Log("Reusing Bullet: " + bullet.name);
             return bullet;
         }
         else
         {
             GameObject bullet = Object.Instantiate(bulletPrefab);
+            Debug.Log("New Bullet Created: " + bullet.name);
             return bullet;
         }
     }
+
 
     public void ReturnObject(GameObject bullet)
     {
