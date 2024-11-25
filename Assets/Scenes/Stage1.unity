@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &14204574
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -533,7 +533,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &1190159799
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -640,8 +640,8 @@ Transform:
   m_GameObject: {fileID: 1190159798}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.49, y: 0.01, z: 0}
-  m_LocalScale: {x: 1, y: 10.51875, z: 1}
+  m_LocalPosition: {x: 9.4509, y: 0.01, z: 0}
+  m_LocalScale: {x: 1.0782, y: 10.51875, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -710,7 +710,8 @@ MonoBehaviour:
   spawnPoint: {fileID: 1708351703}
   moveInterval: 0.1
   fallInterval: 0.5
-  moveSpeed: 1
+  moveSpeedVertical: 1
+  moveSpeedHorizental: 2
   bulletCount: 10
   fallDistance: 10
   waitBeforeFall: 2
@@ -746,7 +747,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &1527443934
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -907,7 +908,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &1880987427
 BoxCollider2D:
   m_ObjectHideFlags: 0
