@@ -123,59 +123,77 @@ public class Stage1Script : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
-        StartCoroutine(GenerateHorizontalLine()); // 가로 패턴으로 전환
+        StartCoroutine(GenerateBottomLine()); // 가로 패턴으로 전환
     }
 
-    IEnumerator MoveBulletLeft(GameObject bullet)
+
+
+   IEnumerator GenerateBottomLine()
+{
+    currentBullets.Clear();
+
+    // 화면 아래쪽 시작 위치 계산 (정확히 1줄로 생성)
+    Vector3 bottomPosition = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
+    bottomPosition.y = -4.5f; // Y 좌표를 고정 (화면 바닥 기준으로 원하는 값)
+    bottomPosition.z = 0f;    // Z축 고정
+
+    for (int i = 0; i < 18; i++)
     {
-        while (true)
-        {
-            float randomY = Random.Range(-4f, 4f);
-            bullet.transform.position = new Vector3(10f, randomY, bullet.transform.position.z);
+        GameObject bullet = bulletPool.GetObject();
 
-            Vector3 targetPosition = bullet.transform.position + Vector3.left;
+        // 가로로 1줄로 생성되도록 설정
+        bullet.transform.position = new Vector3(
+            bottomPosition.x + (i * 1.0f), // X는 일정 간격으로 증가
+            bottomPosition.y,              // Y는 고정된 값
+            0f
+        );
 
-            while (bullet.transform.position.x > -10f)
-            {
-                bullet.transform.position = Vector3.MoveTowards(bullet.transform.position, targetPosition, moveSpeedHorizental * Time.deltaTime);
+        // 총알 타입 설정 (0, 1 반복)
+        int type = i % 2;
+        bullet.GetComponent<Bullet>().SetType(type);
 
-                // 왼쪽 화면 밖으로 벗어나면 제거
-                if (bullet.transform.position.x < -10f)
-                {
-                    Destroy(bullet);
-                    yield break;
-                }
+        currentBullets.Add(bullet);
 
-                yield return null;
-            }
-        }
+        // 다음 총알 생성까지 대기
+        yield return new WaitForSeconds(moveInterval);
     }
 
-    IEnumerator GenerateLeftToRightBullets()
+    // 총알 이동 시작 (위로 이동)
+    foreach (GameObject bullet in currentBullets)
     {
-        while (true)
-        {
-            GameObject bullet = bulletPool.GetObject();
-
-            // 총알을 화면 오른쪽 위에서 시작하도록 설정
-            float randomY = Random.Range(-4f, 4f); // Y축 랜덤 위치
-            bullet.transform.position = new Vector3(10f, randomY, 0f);
-
-            StartCoroutine(MoveBulletLeft(bullet));
-
-            yield return new WaitForSeconds(moveInterval);
-        }
+        StartCoroutine(MoveBulletUp(bullet));
     }
 
-    void Shuffle(List<int> list)
+    yield return new WaitForSeconds(2f);
+
+    // 다음 패턴 호출
+    StartCoroutine(GenerateVerticalLine());
+}
+
+
+    IEnumerator MoveBulletUp(GameObject bullet)
     {
-        for (int i = 0; i < list.Count; i++)
+        // 랜덤 속도 설정
+        float randomSpeed = Random.Range(3f, 7f); // 최소 속도를 3f로 설정
+
+        // 목표 위치 설정 (X 좌표는 그대로, Y는 화면 위쪽 끝으로 설정)
+        float targetY = 10f; // 화면 위쪽 끝 (원하는 Y 값)
+        Vector3 targetPosition = new Vector3(bullet.transform.position.x, targetY, bullet.transform.position.z);
+
+        while (bullet.transform.position.y < targetY) // Y가 목표 값에 도달할 때까지 이동
         {
-            int randomIndex = Random.Range(0, list.Count);
-            int temp = list[i];
-            list[i] = list[randomIndex];
-            list[randomIndex] = temp;
+            // 목표 위치로 이동
+            bullet.transform.position = Vector3.MoveTowards(
+                bullet.transform.position,
+                targetPosition,
+                randomSpeed * Time.deltaTime // 랜덤 속도로 이동
+            );
+
+            yield return null; // 매 프레임마다 이동
         }
+
+        // 화면 밖으로 나가면 제거
+        Destroy(bullet);
     }
 
     IEnumerator MoveBulletLeftWithRandomSpeed(GameObject bullet)
