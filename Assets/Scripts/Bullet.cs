@@ -26,5 +26,15 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    
+    // 플레이어와 충돌 시 사망 처리
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        // 플레이어와 충돌 시 처리 (예: 플레이어 태그가 "Player"일 때)
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            // 플레이어와 충돌 시 사망 처리
+            Destroy(collision.gameObject);  // 플레이어를 사망시킴
+            Destroy(gameObject);  // 총알도 삭제
+        }
+    }
 }
