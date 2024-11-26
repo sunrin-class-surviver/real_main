@@ -43,11 +43,31 @@ public class Stage1Script : MonoBehaviour
 
         foreach (GameObject bullet in currentBullets)
         {
-            StartCoroutine(MoveBullet(bullet, Vector3.down * Random.Range(bulletSpeedMin, bulletSpeedMax), "vertical"));
+            StartCoroutine(DropBulletDown(bullet));
         }
 
         yield return new WaitForSeconds(2f);
         StartCoroutine(GenerateVerticalLine());
+    }
+
+    IEnumerator DropBulletDown(GameObject bullet)
+    {
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        if (rb == null) rb = bullet.AddComponent<Rigidbody2D>();
+
+        rb.gravityScale = 1f;
+        rb.velocity = new Vector2(0f, -5f);
+
+        while (true)
+        {
+            if (bullet.transform.position.y < -10f)
+            {
+                Destroy(bullet);
+                yield break;
+            }
+
+            yield return null;
+        }
     }
 
     IEnumerator GenerateVerticalLine()
