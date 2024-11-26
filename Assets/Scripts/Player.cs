@@ -3,7 +3,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
-    public float moveSpeed = 5f;  // 이동 속도
+    public float moveSpeed = 7f;  // 이동 속도
 
     private void Awake()
     {

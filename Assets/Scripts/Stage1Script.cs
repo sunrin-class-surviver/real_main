@@ -39,15 +39,19 @@ public class Stage1Script : MonoBehaviour
 
         foreach (GameObject bullet in currentBullets)
         {
-            StartCoroutine(DropBulletDown(bullet));
+            // 각 총알에 랜덤 지연 시간 추가
+            float randomDelay = Random.Range(0.0f, 1.0f);
+            StartCoroutine(DropBulletDown(bullet, randomDelay));
         }
 
         yield return new WaitForSeconds(2f);
         StartCoroutine(GenerateVerticalLine());
     }
 
-    IEnumerator DropBulletDown(GameObject bullet)
+    IEnumerator DropBulletDown(GameObject bullet, float delay)
     {
+        yield return new WaitForSeconds(delay);
+
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         if (rb == null) rb = bullet.AddComponent<Rigidbody2D>();
 
