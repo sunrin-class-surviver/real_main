@@ -356,7 +356,13 @@ MonoBehaviour:
   - {fileID: 4949713591965179296, guid: 03554f871026a8f4e9c382a1eb03564d, type: 3}
   - {fileID: 4587812725905678219, guid: 5069364b0d66e274f8896e86d5482151, type: 3}
   - {fileID: 391955409451749041, guid: 4ada129f9402d4b439508cccca3b6d04, type: 3}
-  spawnPoints: []
+  spawnPoints:
+  - {fileID: 2071521276}
+  - {fileID: 1677167003}
+  - {fileID: 520987046}
+  - {fileID: 539553281}
+  - {fileID: 1572382187}
+  - {fileID: 355284340}
   spawnInterval: 2
 --- !u!1 &986128995
 GameObject:
