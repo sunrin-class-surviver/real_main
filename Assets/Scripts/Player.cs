@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     else
     {
         Debug.LogError("Game Over Panel is not assigned!");
-    }
+    }   
 }
 
 }
