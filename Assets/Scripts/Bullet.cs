@@ -37,4 +37,5 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);  // 총알도 삭제
         }
     }
+    
 }
