@@ -10,16 +10,24 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();  // Rigidbody2D 컴포넌트를 가져옴
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        // 입력 값 받아오기 (화살표 키나 WASD 키 사용)
+        // 입력 값 받아오기
         float moveX = Input.GetAxisRaw("Horizontal");  // A/D 또는 Left/Right 화살표
         float moveY = Input.GetAxisRaw("Vertical");    // W/S 또는 Up/Down 화살표
 
-        // 입력에 따라 이동 벡터 계산
-        Vector2 moveDirection = new Vector2(moveX, moveY).normalized;  // 방향 벡터
+        // 방향 벡터 계산
+        Vector2 moveDirection = new Vector2(moveX, moveY).normalized;
 
-        // 물리 기반으로 이동
-        rb.velocity = moveDirection * moveSpeed;  // 속도 적용
+        // 이동 속도 적용
+        rb.velocity = moveDirection * moveSpeed;
+    }
+
+    private void OnTriggerEnter2D(Collider2D o)
+    {
+        if (o.gameObject.CompareTag("Bullet"))
+        {
+            print("Game Over");
+        }
     }
 }
