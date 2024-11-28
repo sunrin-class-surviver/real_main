@@ -7,21 +7,19 @@ public class Stage1Script : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform spawnPoint;
     public float moveInterval = 0.1f;
-    public float waitBeforeFall = 1.5f;
-    public float bulletSpeedMin = 3f;
-    public float bulletSpeedMax = 7f;
-    public int bulletCount = 20;
-    public float screenMargin = 1f;
+    // public float fallInterval = 0.5f;
+    // public float moveSpeedVertical = 1f;
+    // public float moveSpeedHorizontal = 2f;
+    // public int bulletCount = 10;
+    // public float fallDistance = 10f;
 
-    private bool isGenerating = false;
+   // private bool isGenerating = false;
     private Vector3 horizontalStartPosition;
-    private ObjectPool bulletPool;
     private List<GameObject> currentBullets = new List<GameObject>();
 
     void Start()
     {
         horizontalStartPosition = spawnPoint.position;
-        bulletPool = new ObjectPool(bulletPrefab, bulletCount);
         StartCoroutine(GenerateHorizontalLine());
     }
 
@@ -31,7 +29,7 @@ public class Stage1Script : MonoBehaviour
 
         for (int i = 0; i < 18; i++)
         {
-            GameObject bullet = bulletPool.GetObject();
+            GameObject bullet = Instantiate(bulletPrefab);
             bullet.transform.position = horizontalStartPosition + Vector3.right * i;
             bullet.GetComponent<Bullet>().SetType(i % 2);
 
@@ -39,19 +37,21 @@ public class Stage1Script : MonoBehaviour
             yield return new WaitForSeconds(moveInterval);
         }
 
-        yield return new WaitForSeconds(waitBeforeFall);
-
         foreach (GameObject bullet in currentBullets)
         {
-            StartCoroutine(DropBulletDown(bullet));
+            // 각 총알에 랜덤 지연 시간 추가
+            float randomDelay = Random.Range(0.0f, 1.0f);
+            StartCoroutine(DropBulletDown(bullet, randomDelay));
         }
 
         yield return new WaitForSeconds(2f);
         StartCoroutine(GenerateVerticalLine());
     }
 
-    IEnumerator DropBulletDown(GameObject bullet)
+    IEnumerator DropBulletDown(GameObject bullet, float delay)
     {
+        yield return new WaitForSeconds(delay);
+
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         if (rb == null) rb = bullet.AddComponent<Rigidbody2D>();
 
@@ -73,18 +73,21 @@ public class Stage1Script : MonoBehaviour
     IEnumerator GenerateVerticalLine()
     {
         currentBullets.Clear();
-        Vector3 rightEdge = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-        rightEdge.x -= screenMargin;
-        rightEdge.z = 0;
 
-        for (int i = 0; i < 13; i++)
+        float verticalSpacing = 0.8f;
+        int totalBullets = 13;
+        Vector3 rightEdgeWorld = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        rightEdgeWorld.z = 0f;
+
+        for (int i = 0; i < totalBullets; i++)
         {
-            GameObject bullet = bulletPool.GetObject();
+            GameObject bullet = Instantiate(bulletPrefab);
             bullet.transform.position = new Vector3(
-                rightEdge.x,
-                rightEdge.y - (i * 0.8f),
+                rightEdgeWorld.x - 1f,
+                rightEdgeWorld.y - (i * verticalSpacing),
                 0f
             );
+
             bullet.GetComponent<Bullet>().SetType(i % 2);
 
             currentBullets.Add(bullet);
@@ -93,7 +96,7 @@ public class Stage1Script : MonoBehaviour
 
         foreach (GameObject bullet in currentBullets)
         {
-            StartCoroutine(MoveBullet(bullet, Vector3.left * Random.Range(bulletSpeedMin, bulletSpeedMax), "horizontal"));
+            StartCoroutine(MoveBulletLeft(bullet));
         }
 
         yield return new WaitForSeconds(1f);
@@ -103,14 +106,20 @@ public class Stage1Script : MonoBehaviour
     IEnumerator GenerateBottomLine()
     {
         currentBullets.Clear();
+
         Vector3 bottomPosition = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
         bottomPosition.y = -4.5f;
-        bottomPosition.z = 0;
+        bottomPosition.z = 0f;
 
         for (int i = 0; i < 18; i++)
         {
-            GameObject bullet = bulletPool.GetObject();
-            bullet.transform.position = new Vector3(bottomPosition.x + (i * 1.0f), bottomPosition.y, 0f);
+            GameObject bullet = Instantiate(bulletPrefab);
+            bullet.transform.position = new Vector3(
+                bottomPosition.x + (i * 1.0f),
+                bottomPosition.y,
+                0f
+            );
+
             bullet.GetComponent<Bullet>().SetType(i % 2);
 
             currentBullets.Add(bullet);
@@ -119,31 +128,51 @@ public class Stage1Script : MonoBehaviour
 
         foreach (GameObject bullet in currentBullets)
         {
-            StartCoroutine(MoveBullet(bullet, Vector3.up * Random.Range(bulletSpeedMin, bulletSpeedMax), "vertical"));
+            StartCoroutine(MoveBulletUp(bullet));
         }
 
         yield return new WaitForSeconds(2f);
         StartCoroutine(GenerateVerticalLeftLine());
     }
 
+    IEnumerator MoveBulletUp(GameObject bullet)
+    {
+        float randomSpeed = Random.Range(3f, 7f);
+        Vector3 targetPosition = new Vector3(bullet.transform.position.x, 10f, bullet.transform.position.z);
+
+        while (bullet.transform.position.y < 10f)
+        {
+            bullet.transform.position = Vector3.MoveTowards(
+                bullet.transform.position,
+                targetPosition,
+                randomSpeed * Time.deltaTime
+            );
+
+            yield return null;
+        }
+
+        Destroy(bullet);
+    }
+
     IEnumerator GenerateVerticalLeftLine()
     {
-        if (isGenerating) yield break;
-        isGenerating = true;
-
         currentBullets.Clear();
-        Vector3 leftEdge = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0));
-        leftEdge.x += screenMargin;
-        leftEdge.z = 0;
 
-        for (int i = 0; i < 13; i++)
+        float verticalSpacing = 0.8f;
+        int totalBullets = 13;
+
+        Vector3 leftEdgeWorld = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0));
+        leftEdgeWorld.z = 0f;
+
+        for (int i = 0; i < totalBullets; i++)
         {
-            GameObject bullet = bulletPool.GetObject();
+            GameObject bullet = Instantiate(bulletPrefab);
             bullet.transform.position = new Vector3(
-                leftEdge.x,
-                leftEdge.y - (i * 0.8f),
+                leftEdgeWorld.x + 1f,
+                leftEdgeWorld.y - (i * verticalSpacing),
                 0f
             );
+
             bullet.GetComponent<Bullet>().SetType(i % 2);
 
             currentBullets.Add(bullet);
@@ -152,63 +181,36 @@ public class Stage1Script : MonoBehaviour
 
         foreach (GameObject bullet in currentBullets)
         {
-            StartCoroutine(MoveBullet(bullet, Vector3.right * Random.Range(bulletSpeedMin, bulletSpeedMax), "horizontal"));
+            StartCoroutine(MoveBulletRight(bullet));
         }
 
         yield return new WaitForSeconds(1f);
         StartCoroutine(GenerateHorizontalLine());
     }
 
-    IEnumerator MoveBullet(GameObject bullet, Vector3 velocity, string direction)
+    IEnumerator MoveBulletLeft(GameObject bullet)
     {
-        while (true)
+        float randomSpeed = Random.Range(3f, 7f);
+
+        while (bullet.transform.position.x > -10f)
         {
-            bullet.transform.position += velocity * Time.deltaTime;
-
-            if ((direction == "vertical" && Mathf.Abs(bullet.transform.position.y) > 10f) ||
-                (direction == "horizontal" && Mathf.Abs(bullet.transform.position.x) > 10f))
-            {
-                bulletPool.ReturnObject(bullet);
-                yield break;
-            }
-
+            bullet.transform.position += Vector3.left * randomSpeed * Time.deltaTime;
             yield return null;
         }
-    }
-}
 
-public class ObjectPool
-{
-    private GameObject prefab;
-    private Queue<GameObject> pool = new Queue<GameObject>();
-
-    public ObjectPool(GameObject prefab, int initialSize)
-    {
-        this.prefab = prefab;
-
-        for (int i = 0; i < initialSize; i++)
-        {
-            GameObject obj = Object.Instantiate(prefab);
-            obj.SetActive(false);
-            pool.Enqueue(obj);
-        }
+        Destroy(bullet);
     }
 
-    public GameObject GetObject()
+    IEnumerator MoveBulletRight(GameObject bullet)
     {
-        if (pool.Count > 0)
+        float randomSpeed = Random.Range(3f, 7f);
+
+        while (bullet.transform.position.x < 10f)
         {
-            GameObject obj = pool.Dequeue();
-            obj.SetActive(true);
-            return obj;
+            bullet.transform.position += Vector3.right * randomSpeed * Time.deltaTime;
+            yield return null;
         }
 
-        return Object.Instantiate(prefab);
-    }
-
-    public void ReturnObject(GameObject obj)
-    {
-        obj.SetActive(false);
-        pool.Enqueue(obj);
+        Destroy(bullet);
     }
 }
