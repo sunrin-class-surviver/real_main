@@ -979,11 +979,21 @@ MonoBehaviour:
   basicBulletInterval: 0
   basicBulletFallSpeedMin: 8
   basicBulletFallSpeedMax: 10
+  specialBulletInterval: 3
+  specialBulletFallSpeedMin: 8
+  specialBulletFallSpeedMax: 10
   screenLeftX: -8
   screenRightX: 8
+  screenTopY: 10
   screenBottomY: -10
   horizontalSpacing: 2
-  maxBulletsPerRow: 6
+  maxBulletsPerRow: 1000
+  maxRows: 10
+  verticalSpacing: 2
+  cBulletFallSpeed: 30
+  cBulletInterval: 0.05
+  cBulletDuration: 3
+  triangleBulletInterval: 0.1
 --- !u!4 &1492431262
 Transform:
   m_ObjectHideFlags: 0
