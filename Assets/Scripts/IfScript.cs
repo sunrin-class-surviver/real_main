@@ -53,4 +53,18 @@ public class IfScript : MonoBehaviour
         }
         Destroy(bullet);
     }
+
+    public void StopBulletGeneration()
+    {
+        Debug.Log("Stopping all continuous bullets!");
+
+        // 총알 생성 중지: 현재 활성화된 총알들을 비활성화하거나 제거
+        foreach (var bullet in GetComponentsInChildren<Bullet>())
+        {
+            // 예시: 총알들을 비활성화하거나 제거
+            Destroy(bullet.gameObject);
+        }
+
+        // 추가적으로 다른 멈춤 처리 필요 시 구현
+    }
 }

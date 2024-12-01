@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1715158602499437399}
   m_Layer: 0
   m_Name: return
-  m_TagString: Stage2Bullet
+  m_TagString: return
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
