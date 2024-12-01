@@ -4,10 +4,9 @@ using UnityEngine;
 public class ForScript : MonoBehaviour
 {
     public GameObject bulletPrefab;
-    public GameObject player;  // 플레이어 객체 받기
     public float horizontalSpacing = 2f;
     public float verticalSpacing = 2f;
-    public int maxRows = 5;
+    public int maxRows = 20;
     public float triangleBulletInterval = 0.1f;
 
     private bool[] rowSpawned;
@@ -23,17 +22,21 @@ public class ForScript : MonoBehaviour
 
     public IEnumerator SpawnTriangleBulletPattern()
     {
+        // 화면의 가로 크기를 계산 (카메라의 orthoSize와 화면의 비율을 이용)
+        float screenWidth = Camera.main.orthographicSize * 2f * Screen.width / Screen.height;
+        
+        // 화면 중앙 X 좌표 계산 (기존 코드에서의 문제는 여기서 발생)
+        float centerX = 0f;  // 가운데를 기준으로 할 때, 플레이어가 아닌 화면의 중앙을 사용
+
         for (int row = 0; row < maxRows; row++)
         {
             int bulletsInRow = row + 1;  // 첫 번째 행은 1개, 두 번째 행은 2개, 세 번째 행은 3개...
 
             // 각 행에서 총알을 생성할 X 좌표 계산
-            // X 좌표는 플레이어를 기준으로 설정
             for (int i = 0; i < bulletsInRow; i++)
             {
-                // 플레이어의 X 위치를 기준으로 배치
-                float playerX = player.transform.position.x;
-                float spawnX = playerX + (i - (bulletsInRow / 2f)) * horizontalSpacing; // 플레이어를 기준으로 총알 배치
+                // 화면 중앙을 기준으로 배치
+                float spawnX = centerX + (i - (bulletsInRow / 2f)) * horizontalSpacing; // 가운데를 기준으로 총알 배치
                 float spawnY = Camera.main.orthographicSize + (row * verticalSpacing);  // Y 좌표는 행마다 올라가게
                 Vector3 spawnPosition = new Vector3(spawnX, spawnY, 0f);
 

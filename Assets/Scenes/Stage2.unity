@@ -976,7 +976,6 @@ MonoBehaviour:
   - {fileID: 4949713591965179296, guid: 03554f871026a8f4e9c382a1eb03564d, type: 3}
   - {fileID: 4587812725905678219, guid: 5069364b0d66e274f8896e86d5482151, type: 3}
   - {fileID: 391955409451749041, guid: 4ada129f9402d4b439508cccca3b6d04, type: 3}
-<<<<<<< HEAD
   basicBulletInterval: 0
   basicBulletFallSpeedMin: 10
   basicBulletFallSpeedMax: 12
@@ -985,28 +984,20 @@ MonoBehaviour:
   specialBulletFallSpeedMax: 10
   screenLeftX: -10
   screenRightX: 10
-=======
-  basicBulletInterval: 1
-  basicBulletFallSpeed: 2
-  specialBulletInterval: 0.5
-  specialBulletBatchSize: 5
-  specialBulletFallSpeedMultiplier: 1.5
-  screenLeftX: -8
-  screenRightX: 8
->>>>>>> da7dacf57000d35659e0ba3298df8de5216af230
   screenTopY: 10
   screenBottomY: -10
   horizontalSpacing: 2
-  maxBulletsPerRow: 6
-  maxRows: 5
+  maxBulletsPerRow: 10000
+  maxRows: 10000
   verticalSpacing: 2
+  player: {fileID: 2021285906}
   cBulletFallSpeed: 30
   cBulletInterval: 0.05
   cBulletDuration: 3
-  triangleBulletInterval: 0.1
-  triangleBulletManager: {fileID: 0}
-  cShapeBulletManager: {fileID: 0}
-  continuousBulletManager: {fileID: 0}
+  triangleBulletInterval: 0
+  triangleBulletManagerObject: {fileID: 0}
+  cShapeBulletManagerObject: {fileID: 0}
+  continuousBulletManagerObject: {fileID: 0}
 --- !u!4 &1492431262
 Transform:
   m_ObjectHideFlags: 0
@@ -1687,9 +1678,10 @@ SceneRoots:
   - {fileID: 1487055590}
   - {fileID: 19478495}
   - {fileID: 869791540}
-  - {fileID: 1492431262}
   - {fileID: 2021285908}
   - {fileID: 986128998}
   - {fileID: 1765261749}
   - {fileID: 1966236758}
   - {fileID: 1305270384}
+  - {fileID: 1492431262}
+  - {fileID: 1464733076}

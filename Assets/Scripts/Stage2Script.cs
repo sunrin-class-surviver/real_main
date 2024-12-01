@@ -32,7 +32,6 @@ public class Stage2Script : MonoBehaviour
     public float verticalSpacing = 2f; // 총알 간의 세로 간격
 
 
- public GameObject player;
     public float cBulletFallSpeed = 30f;
     public float cBulletInterval = 0.05f; // C자 총알의 생성 간격
     public float cBulletDuration = 3f; // C자 총알이 생성될 시간 (3초 동안 계속 생성)
@@ -71,7 +70,7 @@ public class Stage2Script : MonoBehaviour
         cShapeBulletManager.bulletPrefab = bulletPrefab;    // WhileScript에 bulletPrefab 전달
         continuousBulletManager.bulletPrefab = bulletPrefab; // IfScript에 bulletPrefab 전달
 
-         triangleBulletManager.player = player; 
+        
 
         sectionWidth = (screenRightX - screenLeftX) / 3f;  // 가로 3등분
         sectionHeight = (screenTopY - screenBottomY) / 3f; // 세로 3등분
