@@ -799,10 +799,11 @@ MonoBehaviour:
   - {fileID: 4949713591965179296, guid: 03554f871026a8f4e9c382a1eb03564d, type: 3}
   - {fileID: 4587812725905678219, guid: 5069364b0d66e274f8896e86d5482151, type: 3}
   - {fileID: 391955409451749041, guid: 4ada129f9402d4b439508cccca3b6d04, type: 3}
-  spawnInterval: 0.1
-  randomSpawnChance: 0.1
-  fallSpeedMin: 3
-  fallSpeedMax: 7
+  basicBulletInterval: 1
+  basicBulletFallSpeed: 2
+  specialBulletInterval: 0.5
+  specialBulletBatchSize: 5
+  specialBulletFallSpeedMultiplier: 1.5
   screenLeftX: -8
   screenRightX: 8
   screenBottomY: -10
@@ -1410,9 +1411,9 @@ SceneRoots:
   - {fileID: 1487055590}
   - {fileID: 19478495}
   - {fileID: 869791540}
+  - {fileID: 1492431262}
   - {fileID: 2021285908}
   - {fileID: 986128998}
   - {fileID: 1765261749}
   - {fileID: 1966236758}
   - {fileID: 1305270384}
-  - {fileID: 1492431262}
