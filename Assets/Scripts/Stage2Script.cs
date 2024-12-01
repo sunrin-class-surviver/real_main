@@ -62,8 +62,8 @@ public class Stage2Script : MonoBehaviour
 
         // 각 스크립트를 해당 오브젝트에 부착
         triangleBulletManager = triangleBulletManagerObject.AddComponent<ForScript>();
-        //cShapeBulletManager = cShapeBulletManagerObject.AddComponent<WhileScript>(); // C자 총알
-        //continuousBulletManager = continuousBulletManagerObject.AddComponent<IfScript>(); // 계속 떨어지는 총알
+        cShapeBulletManager = cShapeBulletManagerObject.AddComponent<WhileScript>(); // C자 총알
+        continuousBulletManager = continuousBulletManagerObject.AddComponent<IfScript>(); // 계속 떨어지는 총알
 
         // 각 매니저에 bulletPrefab 전달
         triangleBulletManager.bulletPrefab = bulletPrefab;  // ForScript에 bulletPrefab 전달
@@ -80,7 +80,7 @@ public class Stage2Script : MonoBehaviour
 
         // 각 매니저에서 기능을 시작하도록 호출
         triangleBulletManager.StartCoroutine(triangleBulletManager.SpawnTriangleBulletPattern());
-        //cShapeBulletManager.StartCoroutine(cShapeBulletManager.SpawnCShapedBulletsInSections());
+        cShapeBulletManager.StartCoroutine(cShapeBulletManager.SpawnCShapedBulletsInSections());
         //continuousBulletManager.StartCoroutine(continuousBulletManager.SpawnCShapedBulletsInSections());
 
         // 기본 총알과 특별 총알 생성 시작
