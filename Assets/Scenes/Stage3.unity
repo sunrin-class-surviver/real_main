@@ -2871,7 +2871,7 @@ MonoBehaviour:
   spawnXMin: -9
   spawnXMax: 9
   spawnY: 4.32
-  fallSpeed: 2
+  fallSpeed: 6
   spawnCount: 3
 --- !u!4 &1962934191
 Transform:
