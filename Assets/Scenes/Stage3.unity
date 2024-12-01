@@ -1375,7 +1375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  gameoverPanel: {fileID: 1649316635}
+  gameoverPanel: {fileID: 330392031}
 --- !u!212 &842574973
 SpriteRenderer:
   m_ObjectHideFlags: 0
