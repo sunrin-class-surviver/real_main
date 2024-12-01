@@ -20,7 +20,6 @@ public class Stage2Script : MonoBehaviour
     // 화면 경계
     public float screenLeftX = -10f; // 화면 좌측 경계 (확장)
     public float screenRightX = 10f; // 화면 우측 경계 (확장)
-
     public float screenTopY = 10f;
     public float screenBottomY = -10f; // 화면 하단 경계 (제거 위치)
 
@@ -32,11 +31,11 @@ public class Stage2Script : MonoBehaviour
     public int maxRows = 5; // 삼각형 패턴의 최대 행 수
     public float verticalSpacing = 2f; // 총알 간의 세로 간격
 
-    public float cBulletFallSpeed = 30f;
 
+ public GameObject player;
+    public float cBulletFallSpeed = 30f;
     public float cBulletInterval = 0.05f; // C자 총알의 생성 간격
     public float cBulletDuration = 3f; // C자 총알이 생성될 시간 (3초 동안 계속 생성)
-
     public float triangleBulletInterval = 0.1f; // 삼각형 총알 생성 간격
 
     private float sectionWidth;
@@ -45,21 +44,34 @@ public class Stage2Script : MonoBehaviour
     private int excludedSectionX;  // 제외할 구역 X (0 ~ 2)
 
     private List<GameObject> activeBullets = new List<GameObject>(); // 활성화된 총알 관리
-    private bool[] rowSpawned; // 각 행에 대해 총알이 이미 생성되었는지 확인하는 배열
+
+    // 각 매니저를 연결하는 변수
+    public GameObject triangleBulletManagerObject;
+    public GameObject cShapeBulletManagerObject;
+    public GameObject continuousBulletManagerObject;
+
+    private ForScript triangleBulletManager;
+    private WhileScript cShapeBulletManager;
+    private IfScript continuousBulletManager;
 
     void Start()
     {
-        // 기본 총알 생성 시작
-        // StartCoroutine(SpawnBasicBullets());
+        // 각 총알 관리 스크립트를 관리할 게임 오브젝트를 동적으로 생성
+        triangleBulletManagerObject = new GameObject("TriangleBulletManager");
+        cShapeBulletManagerObject = new GameObject("CShapeBulletManager");
+        continuousBulletManagerObject = new GameObject("ContinuousBulletManager");
 
-        // // 특별 총알 생성 시작
-        // StartCoroutine(SpawnSpecialBullets());
+        // 각 스크립트를 해당 오브젝트에 부착
+        triangleBulletManager = triangleBulletManagerObject.AddComponent<ForScript>();
+        //cShapeBulletManager = cShapeBulletManagerObject.AddComponent<WhileScript>(); // C자 총알
+        //continuousBulletManager = continuousBulletManagerObject.AddComponent<IfScript>(); // 계속 떨어지는 총알
 
-        // 삼각형 총알 패턴을 계속 생성하고 내려가게 시작
-        //rowSpawned = new bool[maxRows]; // 행마다 총알 생성 여부를 추적
-        //StartCoroutine(SpawnTriangleBulletPattern());
+        // 각 매니저에 bulletPrefab 전달
+        triangleBulletManager.bulletPrefab = bulletPrefab;  // ForScript에 bulletPrefab 전달
+        cShapeBulletManager.bulletPrefab = bulletPrefab;    // WhileScript에 bulletPrefab 전달
+        continuousBulletManager.bulletPrefab = bulletPrefab; // IfScript에 bulletPrefab 전달
 
-        //StartCoroutine(SpawnCShapedBullets());
+         triangleBulletManager.player = player; 
 
         sectionWidth = (screenRightX - screenLeftX) / 3f;  // 가로 3등분
         sectionHeight = (screenTopY - screenBottomY) / 3f; // 세로 3등분
@@ -67,8 +79,16 @@ public class Stage2Script : MonoBehaviour
         // 랜덤으로 제외할 구역을 설정
         excludedSectionX = Random.Range(0, 3);  // 0, 1, 2 중 하나
 
-        StartCoroutine(SpawnCShapedBulletsInSections());
+        // 각 매니저에서 기능을 시작하도록 호출
+        triangleBulletManager.StartCoroutine(triangleBulletManager.SpawnTriangleBulletPattern());
+        //cShapeBulletManager.StartCoroutine(cShapeBulletManager.SpawnCShapedBulletsInSections());
+        //continuousBulletManager.StartCoroutine(continuousBulletManager.SpawnCShapedBulletsInSections());
+
+        // 기본 총알과 특별 총알 생성 시작
+        //StartCoroutine(SpawnBasicBullets());
+        //StartCoroutine(SpawnSpecialBullets());
     }
+
 
     // 기본 총알 생성
     IEnumerator SpawnBasicBullets()
@@ -183,96 +203,5 @@ public class Stage2Script : MonoBehaviour
             }
         }
         return false; // 겹치지 않으면 false 반환
-    }
-
-    // 삼각형 총알 패턴 계속 생성 (쭉 내려오는 형태)
-    IEnumerator SpawnTriangleBulletPattern()
-    {
-        while (true) // 무한 반복으로 삼각형 패턴 생성
-        {
-            for (int row = 0; row < maxRows; row++)
-            {
-                if (rowSpawned[row]) continue; // 이미 생성된 행은 건너뛰기
-
-                // 가로 간격을 점점 넓혀 가기 위해서
-                float dynamicSpacing = horizontalSpacing + (row * 0.5f); // 행마다 간격을 넓힘
-
-                // 한 줄에 생성할 총알의 개수 (행 번호에 비례)
-                int bulletsInRow = row + 1;
-
-                // 한 줄에 총알을 배치
-                for (int i = 0; i < bulletsInRow; i++)
-                {
-                    // X 좌표는 화면 중앙에서 왼쪽과 오른쪽 3칸을 제외한 범위 내에서 랜덤으로 배치
-                    float minX = screenLeftX + dynamicSpacing;
-                    float maxX = screenRightX - dynamicSpacing;
-                    float spawnX = Random.Range(minX, maxX);
-
-                    // Y 좌표는 각 행의 Y 값으로 내려옴
-                    float spawnY = Camera.main.orthographicSize + (row * verticalSpacing); 
-
-                    Vector3 spawnPosition = new Vector3(spawnX, spawnY, 0f);
-                    GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
-                    activeBullets.Add(bullet);
-
-                    // 총알 낙하 속도 설정
-                    float randomFallSpeed = Random.Range(basicBulletFallSpeedMin, basicBulletFallSpeedMax);
-                    StartCoroutine(MoveBulletDown(bullet, randomFallSpeed));
-                }
-
-                // 삼각형 패턴의 한 행을 생성하고 간격을 조절
-                rowSpawned[row] = true;
-                yield return new WaitForSeconds(triangleBulletInterval);
-            }
-
-            // 삼각형 패턴을 한 번 다 끝내면 다시 처음으로
-            rowSpawned = new bool[maxRows];
-        }
-    }
-
-    // C자 총알을 3초간 계속 생성하는 코루틴
-    IEnumerator SpawnCShapedBulletsInSections()
-    {
-        float startTime = Time.time; // C자 총알 생성 시작 시간
-
-        while (Time.time - startTime < cBulletDuration) // 3초 동안 계속 생성
-        {
-            // 랜덤으로 제외할 구역을 설정
-            excludedSectionX = Random.Range(0, 3);  // 0, 1, 2 중 하나
-
-            // C자 총알 생성이 제외된 구역을 제외한 두 구역에만 C자 총알을 미친 듯이 생성
-            if (excludedSectionX != 0)
-                SpawnCShapedBulletInRegion(screenLeftX + 2f, -1f); // 왼쪽 구역에 C자 총알 생성
-            if (excludedSectionX != 1)
-                SpawnCShapedBulletInRegion(screenLeftX + sectionWidth, 0f); // 가운데 구역에 C자 총알 생성
-            if (excludedSectionX != 2)
-                SpawnCShapedBulletInRegion(screenRightX - 2f, 1f); // 오른쪽 구역에 C자 총알 생성
-
-            // C자 총알의 생성 간격을 잠깐 기다림
-            yield return new WaitForSeconds(cBulletInterval); // 생성 간격을 유지하며 계속 생성
-        }
-    }
-
-    // C자 모양 총알 생성 (주어진 X 위치에서)
-    void SpawnCShapedBulletInRegion(float xPos, float direction)
-    {
-        // C자 형태로 총알을 여러 개 배치하기 위해 Y 좌표는 점차 아래로 내려가도록 설정
-        float step = 2f; // 총알 사이의 간격 설정 (점점 넓어지도록)
-
-        for (int i = 0; i < 10; i++) // 10개씩 내려옴
-        {
-            float spawnY = Camera.main.orthographicSize + i * step; // 위에서부터 아래로 내려가도록 설정
-            // X 좌표는 수평적으로 정렬되도록 (왼쪽과 오른쪽을 차지하는 영역을 꽉 채움)
-            float spawnX = Mathf.Lerp(xPos - 3f, xPos + 3f, (i % 10) / 9f); // 좌우로 넓어지도록 배치
-
-            Vector3 spawnPosition = new Vector3(spawnX, spawnY, 0f);
-
-            // 총알 생성
-            GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
-            activeBullets.Add(bullet);
-
-            // 총알을 아래로 떨어지게 하기 위한 낙하 시작
-            StartCoroutine(MoveBulletDown(bullet, cBulletFallSpeed));
-        }
     }
 }

@@ -977,23 +977,26 @@ MonoBehaviour:
   - {fileID: 4587812725905678219, guid: 5069364b0d66e274f8896e86d5482151, type: 3}
   - {fileID: 391955409451749041, guid: 4ada129f9402d4b439508cccca3b6d04, type: 3}
   basicBulletInterval: 0
-  basicBulletFallSpeedMin: 8
-  basicBulletFallSpeedMax: 10
-  specialBulletInterval: 3
+  basicBulletFallSpeedMin: 10
+  basicBulletFallSpeedMax: 12
+  specialBulletInterval: 1
   specialBulletFallSpeedMin: 8
   specialBulletFallSpeedMax: 10
-  screenLeftX: -8
-  screenRightX: 8
+  screenLeftX: -10
+  screenRightX: 10
   screenTopY: 10
   screenBottomY: -10
   horizontalSpacing: 2
-  maxBulletsPerRow: 1000
-  maxRows: 10
+  maxBulletsPerRow: 6
+  maxRows: 5
   verticalSpacing: 2
   cBulletFallSpeed: 30
   cBulletInterval: 0.05
   cBulletDuration: 3
   triangleBulletInterval: 0.1
+  triangleBulletManager: {fileID: 0}
+  cShapeBulletManager: {fileID: 0}
+  continuousBulletManager: {fileID: 0}
 --- !u!4 &1492431262
 Transform:
   m_ObjectHideFlags: 0
