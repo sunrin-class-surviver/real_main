@@ -8,7 +8,15 @@ TagManager:
   - Bullet_Stage2
   - Stage2Bullet
   - Bullet2_stage
+<<<<<<< Updated upstream
   - BlackBar
+=======
+  - break
+  - for
+  - while
+  - if
+  - return
+>>>>>>> Stashed changes
   layers:
   - Default
   - TransparentFX

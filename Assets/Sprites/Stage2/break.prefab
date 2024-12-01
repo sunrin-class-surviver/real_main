@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8869686215371005596}
   m_Layer: 0
   m_Name: break
-  m_TagString: Bullet2_stage
+  m_TagString: break
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
