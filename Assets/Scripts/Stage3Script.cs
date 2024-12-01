@@ -9,10 +9,19 @@ public class Stage3Manager : MonoBehaviour
     public GameObject gameOverPanel; // 게임 오버 패널
     private bool isGameOver = false;
 
+    public GameObject jsPrefab; // JS 프리팹
+    public float spawnInterval = 1.5f; // JS 생성 간격
+    public float spawnXMin = -9f; // X 좌표 최소값
+    public float spawnXMax = 9f;  // X 좌표 최대값
+    public float spawnY = 4.32f; // JS 생성 Y 좌표
+    public float fallSpeed = 2f; // JS가 떨어지는 속도
+    public int spawnCount = 3; // 한 번에 생성할 JS 개수
+
     // Start is called before the first frame update
     void Start()
     {
         ShowRandomImageAndBlackBar();
+        InvokeRepeating(nameof(SpawnJS), 0f, spawnInterval); // JS를 일정 간격으로 생성
     }
 
     // 이미지와 검정색 영역을 랜덤으로 보여주는 함수
@@ -58,6 +67,22 @@ public class Stage3Manager : MonoBehaviour
         if (isGameOver)
         {
             ShowGameOverPanel();
+        }
+    }
+
+    // JS 생성 및 떨어지는 로직 추가
+    private void SpawnJS()
+    {
+        for (int i = 0; i < spawnCount; i++)
+        {
+            float randomX = Random.Range(spawnXMin, spawnXMax); // 랜덤 X 좌표
+            Vector3 spawnPosition = new Vector3(randomX, spawnY, 0f); // 생성 위치
+
+            // JS 프리팹 생성
+            GameObject jsInstance = Instantiate(jsPrefab, spawnPosition, Quaternion.identity);
+
+            // JS 이동 스크립트 추가
+            jsInstance.AddComponent<Stage3JS>().fallSpeed = fallSpeed;
         }
     }
 

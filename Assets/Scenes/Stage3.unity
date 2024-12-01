@@ -2866,6 +2866,13 @@ MonoBehaviour:
   - {fileID: 898420307}
   player: {fileID: 842574969}
   gameOverPanel: {fileID: 1649316635}
+  jsPrefab: {fileID: 3858235546345216427, guid: a39644ef8a825cc45b5b105b747d4a04, type: 3}
+  spawnInterval: 1.5
+  spawnXMin: -9
+  spawnXMax: 9
+  spawnY: 4.32
+  fallSpeed: 2
+  spawnCount: 3
 --- !u!4 &1962934191
 Transform:
   m_ObjectHideFlags: 0
@@ -2875,7 +2882,7 @@ Transform:
   m_GameObject: {fileID: 1962934189}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 4.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
