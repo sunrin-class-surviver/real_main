@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Bullet
   - Bullet_Stage2
+  - Stage2Bullet
+  - Bullet2_stage
+  - BlackBar
   layers:
   - Default
   - TransparentFX

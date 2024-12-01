@@ -20,26 +20,31 @@ public class Player : MonoBehaviour
         rb.velocity = moveDirection * moveSpeed;
     }
 
+    // 충돌 처리: Bullet이나 BlackBar와 충돌하면 게임 오버
     private void OnTriggerEnter2D(Collider2D o)
     {
-        if (o.gameObject.CompareTag("Bullet"))
+        if (o.CompareTag("Bullet"))
         {
-            print("Game Over!");
+            Debug.Log("Game Over: Hit by Bullet!");
+            ShowGameOverPanel();
+        }
+        else if (o.CompareTag("BlackBar"))
+        {
+            Debug.Log("Game Over: Hit by Blackasdasdar!");
             ShowGameOverPanel();
         }
     }
 
     private void ShowGameOverPanel()
-{
-    if (gameoverPanel != null)
     {
-        gameoverPanel.SetActive(true);  // Game Over 패널 활성화
-        Time.timeScale = 0;            // 게임 멈추기
+        if (gameoverPanel != null)
+        {
+            gameoverPanel.SetActive(true);  // Game Over 패널 활성화
+            Time.timeScale = 0;            // 게임 멈추기
+        }
+        else
+        {
+            Debug.LogError("Game Over Panel is not assigned!");
+        }   
     }
-    else
-    {
-        Debug.LogError("Game Over Panel is not assigned!");
-    }   
-}
-
 }

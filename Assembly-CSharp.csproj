@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\stageTwoBullet.cs" />
     <Compile Include="Assets\Scripts\Stage2Script.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\Stage3Script.cs" />
     <Compile Include="Assets\Scripts\BulletSpawner.cs" />
     <Compile Include="Assets\Scripts\ForScript.cs" />
     <Compile Include="Assets\Scripts\Stage1Script.cs" />
