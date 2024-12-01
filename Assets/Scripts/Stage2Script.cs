@@ -167,23 +167,26 @@ public class Stage2Script : MonoBehaviour
     // 총알 아래로 이동 (속도 적용)
     IEnumerator MoveBulletDown(GameObject bullet, float fallSpeed)
     {
-        // 속도 확인을 위한 콘솔 로그 출력
-        Debug.Log("Bullet Fall Speed: " + fallSpeed);
-
-        // 속도가 너무 빠르게 설정되지 않도록 20을 넘지 않게 제한
-        if (fallSpeed > 20f)
-        {
-            fallSpeed = 20f;
-        }
-
-        // 일정 속도로 떨어지도록 처리
         while (bullet != null && bullet.transform.position.y > screenBottomY)
         {
             bullet.transform.position += Vector3.down * fallSpeed * Time.deltaTime;
+
+            // 충돌 대상 확인
+            Collider[] hits = Physics.OverlapSphere(bullet.transform.position, 0.5f);
+            foreach (Collider hit in hits)
+            {
+                if (hit.CompareTag("Player"))
+                {
+                    Debug.Log("Player hit!");
+                    Destroy(hit.gameObject); // 플레이어 파괴
+                    Destroy(bullet);        // 총알 파괴
+                    yield break;
+                }
+            }
+
             yield return null;
         }
 
-        // 화면 밖으로 벗어난 총알 제거
         if (bullet != null)
         {
             activeBullets.Remove(bullet);
@@ -203,4 +206,14 @@ public class Stage2Script : MonoBehaviour
         }
         return false; // 겹치지 않으면 false 반환
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+{
+    if (other.CompareTag("Player"))
+    {
+        Debug.Log("Player hit by bullet!");
+        print("적용됨");
+        Destroy(gameObject);
+    }
+}
 }

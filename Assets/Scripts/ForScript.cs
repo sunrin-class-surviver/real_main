@@ -19,7 +19,6 @@ public class ForScript : MonoBehaviour
         rowSpawned = new bool[maxRows];
         StartCoroutine(SpawnTriangleBulletPattern());
     }
-
     public IEnumerator SpawnTriangleBulletPattern()
     {
         // 화면의 가로 크기를 계산 (카메라의 orthoSize와 화면의 비율을 이용)

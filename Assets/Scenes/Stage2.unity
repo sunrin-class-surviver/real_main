@@ -990,7 +990,6 @@ MonoBehaviour:
   maxBulletsPerRow: 10000
   maxRows: 10000
   verticalSpacing: 2
-  player: {fileID: 2021285906}
   cBulletFallSpeed: 30
   cBulletInterval: 0.05
   cBulletDuration: 3
@@ -1482,7 +1481,7 @@ GameObject:
   - component: {fileID: 2021285910}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
