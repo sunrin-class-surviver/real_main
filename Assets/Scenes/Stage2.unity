@@ -308,7 +308,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 869791540}
-  - component: {fileID: 869791541}
   m_Layer: 0
   m_Name: BulletSpawner
   m_TagString: Untagged
@@ -337,24 +336,6 @@ Transform:
   - {fileID: 355284340}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &869791541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 869791538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 622bd5b97eff5874084489af99d9fd66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefabs: []
-  spawnInterval: 0.1
-  specialSpawnChance: 0.1
-  screenLeftX: -8
-  screenRightX: 8
-  spawnY: 10
 --- !u!1 &986128995
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,6 +931,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1492431262}
   - component: {fileID: 1492431261}
+  - component: {fileID: 1492431263}
   m_Layer: 0
   m_Name: Stage2Manager
   m_TagString: Untagged
@@ -976,27 +958,18 @@ MonoBehaviour:
   - {fileID: 4949713591965179296, guid: 03554f871026a8f4e9c382a1eb03564d, type: 3}
   - {fileID: 4587812725905678219, guid: 5069364b0d66e274f8896e86d5482151, type: 3}
   - {fileID: 391955409451749041, guid: 4ada129f9402d4b439508cccca3b6d04, type: 3}
-  basicBulletInterval: 0
-  basicBulletFallSpeedMin: 10
-  basicBulletFallSpeedMax: 12
+  basicBulletInterval: 1
+  basicBulletFallSpeedMin: 2
+  basicBulletFallSpeedMax: 5
   specialBulletInterval: 1
-  specialBulletFallSpeedMin: 8
-  specialBulletFallSpeedMax: 10
+  specialBulletFallSpeedMin: 1
+  specialBulletFallSpeedMax: 1
   screenLeftX: -10
   screenRightX: 10
   screenTopY: 10
   screenBottomY: -10
   horizontalSpacing: 2
   maxBulletsPerRow: 10000
-  maxRows: 10000
-  verticalSpacing: 2
-  cBulletFallSpeed: 30
-  cBulletInterval: 0.05
-  cBulletDuration: 3
-  triangleBulletInterval: 0
-  triangleBulletManagerObject: {fileID: 0}
-  cShapeBulletManagerObject: {fileID: 0}
-  continuousBulletManagerObject: {fileID: 0}
 --- !u!4 &1492431262
 Transform:
   m_ObjectHideFlags: 0
@@ -1012,6 +985,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1492431263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1492431260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc7e008ce8e1d4496e1a85c69b86a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stage2Script: {fileID: 1492431261}
 --- !u!1 &1572382186
 GameObject:
   m_ObjectHideFlags: 0

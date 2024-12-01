@@ -21,7 +21,7 @@ public class WhileScript : MonoBehaviour
         while (Time.time - startTime < cBulletDuration)
         {
             SpawnCShapedBulletInRegion(-5f, -1f);
-            SpawnCShapedBulletInRegion(0f, 0f);
+            //SpawnCShapedBulletInRegion(0f, 0f);
             SpawnCShapedBulletInRegion(5f, 1f);
             yield return new WaitForSeconds(cBulletInterval);
         }

@@ -6,7 +6,7 @@ public class ForScript : MonoBehaviour
     public GameObject bulletPrefab;
     public float horizontalSpacing = 2f;
     public float verticalSpacing = 2f;
-    public int maxRows = 20;
+    public int maxRows = 9;
     public float triangleBulletInterval = 0.1f;
 
     private bool[] rowSpawned;

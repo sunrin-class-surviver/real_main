@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+
 public class IfScript : MonoBehaviour
 {
     public GameObject bulletPrefab;
@@ -14,11 +15,17 @@ public class IfScript : MonoBehaviour
     {
         excludedSectionX = Random.Range(0, 3);
         StartCoroutine(SpawnCShapedBulletsInSections());
+
+        // 2초 뒤에 StopBulletGeneration 호출
+        StartCoroutine(StopBulletGenerationAfterDelay(2f));
     }
 
+    // 총알 생성 코루틴 (2초 동안만 총알을 생성)
     public IEnumerator SpawnCShapedBulletsInSections()
     {
-        while (true)
+        float elapsedTime = 0f; // 경과 시간 추적
+
+        while (elapsedTime < 2f) // 2초 동안만 생성
         {
             if (excludedSectionX != 0)
                 SpawnCShapedBulletInRegion(screenLeftX + 2f, -1f); 
@@ -27,10 +34,15 @@ public class IfScript : MonoBehaviour
             if (excludedSectionX != 2)
                 SpawnCShapedBulletInRegion(screenRightX - 2f, 1f); 
 
-            yield return new WaitForSeconds(cBulletInterval);
+            elapsedTime += cBulletInterval; // 시간 증가
+            yield return new WaitForSeconds(cBulletInterval); // 일정 간격으로 생성
         }
+
+        // 2초 후 더 이상 총알을 생성하지 않음
+        StopBulletGeneration();
     }
 
+    // C자 형태로 총알을 생성하는 함수
     void SpawnCShapedBulletInRegion(float xPos, float direction)
     {
         for (int i = 0; i < 10; i++)
@@ -44,6 +56,7 @@ public class IfScript : MonoBehaviour
         }
     }
 
+    // 총알이 아래로 내려가는 함수
     IEnumerator MoveBulletDown(GameObject bullet, float fallSpeed)
     {
         while (bullet.transform.position.y > -10f)
@@ -54,6 +67,7 @@ public class IfScript : MonoBehaviour
         Destroy(bullet);
     }
 
+    // 총알 생성을 멈추는 함수
     public void StopBulletGeneration()
     {
         Debug.Log("Stopping all continuous bullets!");
@@ -66,5 +80,12 @@ public class IfScript : MonoBehaviour
         }
 
         // 추가적으로 다른 멈춤 처리 필요 시 구현
+    }
+
+    // 2초 후 StopBulletGeneration 호출
+    private IEnumerator StopBulletGenerationAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        StopBulletGeneration();
     }
 }
