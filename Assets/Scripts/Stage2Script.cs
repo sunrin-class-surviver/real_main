@@ -84,7 +84,7 @@ public class Stage2Script : MonoBehaviour
         }
     }
 
-      private IEnumerator DeleteBulletsAndStartFunction(string bulletType)
+    private IEnumerator DeleteBulletsAndStartFunction(string bulletType)
     {
         // 특수 기능 실행 중이라면 추가 총알 생성 막기
         isSpecialBulletFunctionRunning = true;
@@ -111,11 +111,17 @@ public class Stage2Script : MonoBehaviour
                 StartCShapeBulletPattern();
                 break;
             case "break":
-                // break 시작 시 기본 총알과 특수 총알 생성을 멈춤
-                StopSpawningBasicBullets();
-                StopSpawningSpecialBullets();
+                // Break 총알이 충돌하면 플레이어를 1초 멈추기
+                Player player = FindObjectOfType<Player>();  // Player 스크립트 참조
+                if (player != null)
+                {
+                    player.FreezePlayerForSeconds(8f);  // 1초 동안 플레이어를 멈추기
+                }
+                break;
+            case "if":
                 StartContinuousBulletPattern();
                 break;
+
             default:
                 Debug.Log("Unknown bullet type: " + bulletType);
                 break;
@@ -143,8 +149,7 @@ public class Stage2Script : MonoBehaviour
         StartCoroutine(SpawnBasicBullets());
         StartCoroutine(SpawnSpecialBullets());
     }
-    // break 총알 패턴 종료 후, 기본 총알과 특수 총알 생성을 재개
-      
+
     // For 총알 패턴 시작
     private void StartTriangleBulletPattern()
     {
@@ -213,7 +218,7 @@ public class Stage2Script : MonoBehaviour
             if (isSpecialBulletFunctionRunning) // 특수 기능이 실행 중이면 생성하지 않음
             {
                 yield return null; // 대기
-                continue;
+                continue; // 특수 총알 생성 루프를 다시 시작
             }
 
             int numberOfBullets = Random.Range(1, 6);
@@ -255,71 +260,51 @@ public class Stage2Script : MonoBehaviour
     {
         while (true)  // 무한 루프, 총알을 계속 생성하게 만듬
         {
+            if (isSpecialBulletFunctionRunning) // 특수 기능이 실행 중이면 기본 총알 생성 멈춤
+            {
+                yield return null; // 대기
+                continue; // 기본 총알 생성 루프를 다시 시작
+            }
+
             float screenWidth = (screenRightX - screenLeftX); // 화면 너비
-            int totalBullets = Mathf.FloorToInt(screenWidth / horizontalSpacing) + 10; // 총알이 들어갈 수 있는 개수
+            int totalBullets = Mathf.FloorToInt(screenWidth / horizontalSpacing) + 5; // 총알이 들어갈 수 있는 개수
 
             for (int i = 0; i < totalBullets; i++)
             {
-                float spawnX = Random.Range(screenLeftX, screenRightX);
-                float spawnY = Camera.main.orthographicSize;
-                Vector3 spawnPosition = new Vector3(spawnX, spawnY, 0f);
+                float randomX = Random.Range(screenLeftX, screenRightX);
+                float randomY = Camera.main.orthographicSize;
+                Vector3 spawnPosition = new Vector3(randomX, randomY, 0f);
 
+                // 위치가 겹치지 않도록 확인
                 if (!IsPositionOccupied(spawnPosition))
                 {
                     GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
-                    bullet.tag = "Bullet_Stage2"; // 기본 총알에 "Bullet_Stage2" 태그 추가
+                    bullet.tag = "Bullet_Stage2";  // 기본 총알 태그 설정
                     activeBullets.Add(bullet);
+
+                    // 총알 속도 설정
                     float randomFallSpeed = Random.Range(basicBulletFallSpeedMin, basicBulletFallSpeedMax);
                     StartCoroutine(MoveBulletDown(bullet, randomFallSpeed));
                 }
-
-                float randomInterval = Random.Range(0.05f, 0.1f);
-                yield return new WaitForSeconds(randomInterval);
             }
 
             yield return new WaitForSeconds(basicBulletInterval);
         }
     }
 
-    // 총알 아래로 이동
+    // 총알이 화면을 벗어나지 않도록 이동
     IEnumerator MoveBulletDown(GameObject bullet, float fallSpeed)
     {
-        while (bullet != null && bullet.transform.position.y > screenBottomY)
+        while (bullet.transform.position.y > screenBottomY)
         {
-            bullet.transform.position += Vector3.down * fallSpeed * Time.deltaTime;
-
-            Collider[] hits = Physics.OverlapSphere(bullet.transform.position, 0.5f);
-            foreach (Collider hit in hits)
-            {
-                if (hit.CompareTag("Player"))
-                {
-                    // Player와 충돌 시 로그 출력
-                    Debug.Log("Bullet collided with Player!");
-
-                    // 충돌 후 Player와 총알 파괴
-                    Destroy(hit.gameObject);  // Player 파괴
-                    Destroy(bullet);  // 총알 파괴
-
-                    // HandleBulletCollision 호출
-                    string bulletTag = bullet.tag;
-                    Debug.Log("Passing bullet type to HandleBulletCollision: " + bulletTag);
-                    HandleBulletCollision(bulletTag);  // 총알 타입을 전달하여 패턴 시작
-
-                    break;  // 한 번만 처리하고 루프 종료
-                }
-            }
-
+            bullet.transform.Translate(Vector3.down * fallSpeed * Time.deltaTime);
             yield return null;
         }
 
-        // 총알이 화면 아래로 내려가면 파괴
-        if (bullet != null)
-        {
-            Destroy(bullet);
-        }
+        Destroy(bullet);  // 화면을 벗어난 총알은 삭제
     }
 
-    // 총알이 해당 위치에 이미 존재하는지 체크
+    // 위치가 겹치지 않는지 확인
     private bool IsPositionOccupied(Vector3 position)
     {
         foreach (GameObject bullet in activeBullets)
@@ -329,17 +314,16 @@ public class Stage2Script : MonoBehaviour
                 return true;
             }
         }
-
         return false;
     }
 
-    // 총알 생성 제어
-    public void StopSpawningBasicBullets()
+    // 기본 총알 및 특수 총알 생성 멈추기
+    private void StopSpawningBasicBullets()
     {
         isSpawningBasicBullets = false;
     }
 
-    public void StopSpawningSpecialBullets()
+    private void StopSpawningSpecialBullets()
     {
         isSpawningSpecialBullets = false;
     }
