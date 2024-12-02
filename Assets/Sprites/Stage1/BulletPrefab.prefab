@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8255d85152cfde41b1a934e0124fcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet0Sprite: {fileID: 21300000, guid: 1ba5167a0d1a63643baaa12231bb049d, type: 3}
-  bullet1Sprite: {fileID: 21300000, guid: a1588896200010e46b9aafbfc5147a1c, type: 3}
+  bullet0Sprite: {fileID: 21300000, guid: b05e936404cb34543adfff750616a38d, type: 3}
+  bullet1Sprite: {fileID: 21300000, guid: a302e6c006bf93745be785dd5ede39b5, type: 3}
 --- !u!58 &1412817512767463586
 CircleCollider2D:
   m_ObjectHideFlags: 0
