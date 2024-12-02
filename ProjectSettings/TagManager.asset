@@ -3,20 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Bullet
-  - Bullet_Stage2
-  - Stage2Bullet
-  - Bullet2_stage
-<<<<<<< Updated upstream
-  - BlackBar
-=======
-  - break
-  - for
-  - while
-  - if
-  - return
->>>>>>> Stashed changes
+  tags: []
   layers:
   - Default
   - TransparentFX

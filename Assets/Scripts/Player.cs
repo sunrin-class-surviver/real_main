@@ -33,6 +33,11 @@ public class Player : MonoBehaviour
             Debug.Log("Game Over: Hit by Blackasdasdar!");
             ShowGameOverPanel();
         }
+        else if (o.CompareTag("Bullet_Stage2"))
+        {
+            Debug.Log("Game Over: Hit by Blackasdasdar!");
+            ShowGameOverPanel();
+        }
     }
 
     private void ShowGameOverPanel()
