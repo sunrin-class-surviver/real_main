@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Stage2Script : MonoBehaviour
 {
@@ -57,6 +58,18 @@ public class Stage2Script : MonoBehaviour
         {
             StartCoroutine(SpawnSpecialBullets());
         }
+
+        StartCoroutine(LoadNextSceneAfterDelay(5f));
+    }
+    IEnumerator LoadNextSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // 콘솔에 메시지 출력
+        Debug.Log("Stage3로 전환합니다.");
+
+        // 씬 전환
+        SceneManager.LoadScene("Stage3"); // "Stage2" 씬으로 전환
     }
 
     // 총알 충돌 처리

@@ -1,19 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Stage1Script : MonoBehaviour
 {
     public GameObject bulletPrefab;
     public Transform spawnPoint;
     public float moveInterval = 0.1f;
-    // public float fallInterval = 0.5f;
-    // public float moveSpeedVertical = 1f;
-    // public float moveSpeedHorizontal = 2f;
-    // public int bulletCount = 10;
-    // public float fallDistance = 10f;
-
-   // private bool isGenerating = false;
     private Vector3 horizontalStartPosition;
     private List<GameObject> currentBullets = new List<GameObject>();
 
@@ -21,8 +15,18 @@ public class Stage1Script : MonoBehaviour
     {
         horizontalStartPosition = spawnPoint.position;
         StartCoroutine(GenerateHorizontalLine());
+        StartCoroutine(LoadNextSceneAfterDelay(5f));
     }
+    IEnumerator LoadNextSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
 
+        // 콘솔에 메시지 출력
+        Debug.Log("Stage2로 전환합니다.");
+
+        // 씬 전환
+        SceneManager.LoadScene("Stage2"); // "Stage2" 씬으로 전환
+    }
     IEnumerator GenerateHorizontalLine()
     {
         currentBullets.Clear();
