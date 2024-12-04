@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\Maincamera.cs" />
     <Compile Include="Assets\Scripts\BulletSpawner.cs" />
     <Compile Include="Assets\Scripts\Stage3JS.cs" />
+    <Compile Include="Assets\Scripts\BeggingPlayer.cs" />
     <Compile Include="Assets\Scripts\ForScript.cs" />
     <Compile Include="Assets\Scripts\Stage1Script.cs" />
   </ItemGroup>

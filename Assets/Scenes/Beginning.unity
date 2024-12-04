@@ -1976,11 +1976,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1588136525}
-  - component: {fileID: 1588136524}
   - component: {fileID: 1588136523}
+  - component: {fileID: 1588136524}
   - component: {fileID: 1588136527}
   - component: {fileID: 1588136526}
   - component: {fileID: 1588136528}
+  - component: {fileID: 1588136529}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2001,6 +2002,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
+  stage2Script: {fileID: 0}
   gameoverPanel: {fileID: 1588136522}
 --- !u!212 &1588136524
 SpriteRenderer:
@@ -2162,6 +2164,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1588136529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1588136522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6199e97a4b8039d43b0c2b0cf40ac48a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 7
+  gameoverPanel: {fileID: 0}
 --- !u!1 &1591637584
 GameObject:
   m_ObjectHideFlags: 0
