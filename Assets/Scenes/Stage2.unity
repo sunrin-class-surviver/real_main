@@ -179,7 +179,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 29e199a2fa65c1741a42e5a538f74c14, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.84313726}
   m_FlipX: 0
@@ -999,7 +999,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1856,7 +1856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  stage2Script: {fileID: 1492431261}
+  stage2Script: {fileID: 0}
   gameoverPanel: {fileID: 1933448214}
 --- !u!61 &2021285910
 BoxCollider2D:
