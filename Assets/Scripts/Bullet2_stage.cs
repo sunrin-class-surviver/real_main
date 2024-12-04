@@ -28,8 +28,14 @@ public class Bullet_Stage2 : MonoBehaviour
                 case "while":
                     stage2Script.HandleBulletCollision("while");
                     break;
+                case "if":
+                    stage2Script.HandleBulletCollision("if");
+                    break;
                 case "break":
                     stage2Script.HandleBulletCollision("break");
+                    break;
+                case "return":
+                    stage2Script.HandleBulletCollision("return");
                     break;
                 default:
                     Debug.Log("Unknown bullet type: " + bulletTag);
