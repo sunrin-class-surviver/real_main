@@ -5,7 +5,8 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     public float moveSpeed = 7f;  // 이동 속도
     private bool canMove = true;  // 플레이어가 움직일 수 있는지 여부
-
+    
+    public Stage2Script stage2Script;
     public GameObject gameoverPanel;  // Game Over Panel
 
     private void Awake()
@@ -44,19 +45,30 @@ public class Player : MonoBehaviour
     // 충돌 처리: Bullet이나 BlackBar와 충돌하면 게임 오버
     private void OnTriggerEnter2D(Collider2D o)
     {
-        if (o.CompareTag("Bullet"))
+        string bulletTag = o.tag;
+
+        if (bulletTag == "Bullet") // 기본 총알과의 충돌
         {
             Debug.Log("Game Over: Hit by Bullet!");
             ShowGameOverPanel();
         }
+        else if (bulletTag == "for" || bulletTag == "while" || bulletTag == "if" || bulletTag == "break" || bulletTag == "return")
+        {
+            Debug.Log($"Bullet collision detected: {bulletTag}");
+            if (stage2Script != null)
+            {
+                stage2Script.HandleBulletCollision(bulletTag);
+            }
+            Destroy(o.gameObject); // 특수 총알 파괴
+        }
         else if (o.CompareTag("BlackBar"))
         {
-            Debug.Log("Game Over: Hit by Blackasdasdar!");
+            Debug.Log("Game Over: Hit by BlackBar!");
             ShowGameOverPanel();
         }
         else if (o.CompareTag("Bullet_Stage2"))
         {
-            Debug.Log("Game Over: Hit by Blackasdasdar!");
+            Debug.Log("Game Over: Hit by BlackBar!");
             ShowGameOverPanel();
         }
     }
