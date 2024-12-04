@@ -95,20 +95,11 @@ public class Stage2Script : MonoBehaviour
         SceneManager.LoadScene("Stage3");
     }
 
-    // 타이머 재설정 함수
-    public void ResetTimer(float newTime)
+    // 타이머 재설정 함수 (40초로 강제 설정)
+    public void ResetTimer()
     {
-        remainingTime = newTime;
-        Debug.Log($"Timer has been reset to {newTime} seconds.");
-
-        // 타이머 Coroutine을 재시작
-        if (timerCoroutine != null)
-        {
-            StopCoroutine(timerCoroutine);
-            Debug.Log("Stopped previous LoadNextSceneAfterDelay Coroutine.");
-        }
-        timerCoroutine = StartCoroutine(LoadNextSceneAfterDelay());
-        Debug.Log("Started new LoadNextSceneAfterDelay Coroutine after ResetTimer.");
+        remainingTime = 40f;
+        Debug.Log("Timer has been reset to 40 seconds.");
     }
 
     // 총알 충돌 처리
@@ -130,22 +121,22 @@ public class Stage2Script : MonoBehaviour
         isSpecialBulletFunctionRunning = true;
         Debug.Log("isSpecialBulletFunctionRunning set to true.");
 
-        // 모든 총알 삭제
+        // 모든 총알 삭제 (태그가 "return"인 총알 제외)
         foreach (GameObject bullet in activeBullets)
         {
-            if (bullet != null)
+            if (bullet != null && !bullet.CompareTag("return"))
             {
                 Destroy(bullet);
                 Debug.Log($"Bullet destroyed: {bullet.name}");
             }
         }
-        activeBullets.Clear();
-        Debug.Log("All activeBullets cleared.");
+
+        // "return" 태그를 가진 총알을 제외한 모든 총알 제거
+        activeBullets.RemoveAll(bullet => bullet != null && !bullet.CompareTag("return"));
+        Debug.Log("All activeBullets cleared except 'return' bullets.");
 
         // 2초 대기
-        yield return new WaitForSeconds(2f);
-        Debug.Log("Waited 2 seconds in DeleteBulletsAndStartFunction.");
-
+       
         // 특수 총알에 맞은 총알 타입에 따라 특수 기능 시작
         switch (bulletType)
         {
@@ -160,23 +151,15 @@ public class Stage2Script : MonoBehaviour
                 Player player = FindObjectOfType<Player>();  // Player 스크립트 참조
                 if (player != null)
                 {
-                    player.FreezePlayerForSeconds(8f);  // 8초 동안 플레이어를 멈추기
+                    player.FreezePlayerForSeconds(6f);  // 8초 동안 플레이어를 멈추기
                 }
                 break;
             case "if":
                 StartContinuousBulletPattern();
                 break;
             case "return":
-                // ReturnScript를 찾아서 타이머 재설정
-                ReturnScript returnScript = FindObjectOfType<ReturnScript>();
-                if (returnScript != null)
-                {
-                    returnScript.ResetTimer(); // 40초로 타이머 재설정
-                }
-                else
-                {
-                    Debug.LogError("ReturnScript not found in the scene.");
-                }
+                // 'return' 태그를 받은 경우, 다른 스크립트 호출하지 않고 타이머를 40초로 강제 설정
+                ResetTimer(); // 40초로 타이머 재설정
                 break;
 
             default:
@@ -193,7 +176,7 @@ public class Stage2Script : MonoBehaviour
         Debug.Log("isSpecialBulletFunctionRunning set to false.");
 
         // 특수 패턴 종료 후, 기본 총알과 특수 총알 생성 재개
-        StartCoroutine(ResumeBulletSpawningAfterDelay(2f)); // 2초 후 재개
+        StartCoroutine(ResumeBulletSpawningAfterDelay(0.1f)); // 2초 후 재개
         Debug.Log("Started ResumeBulletSpawningAfterDelay Coroutine.");
     }
 

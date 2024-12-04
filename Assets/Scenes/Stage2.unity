@@ -1855,6 +1855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+  stage2Script: {fileID: 1492431261}
   gameoverPanel: {fileID: 1933448214}
 --- !u!61 &2021285910
 BoxCollider2D:
