@@ -1,16 +1,20 @@
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+public class CameraBoundary : MonoBehaviour
 {
-    public Transform target; // 따라갈 캐릭터의 Transform
-    public Vector3 offset;   // 카메라와 캐릭터 사이의 거리
+    public Transform target; // 캐릭터의 Transform
+    public float minX, maxX, minY, maxY; // 이동 가능한 영역의 경계
 
     void LateUpdate()
     {
         if (target != null)
         {
-            // 카메라 위치를 캐릭터 위치 + 오프셋으로 설정
-            transform.position = target.position + offset;
+            // 타겟 위치를 제한
+            float clampedX = Mathf.Clamp(target.position.x, minX, maxX);
+            float clampedY = Mathf.Clamp(target.position.y, minY, maxY);
+
+            // 카메라 위치 설정
+            transform.position = new Vector3(clampedX, clampedY, transform.position.z);
         }
     }
 }
