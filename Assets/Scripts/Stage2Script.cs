@@ -46,6 +46,10 @@ public class Stage2Script : MonoBehaviour
 
     private List<GameObject> currentBasicBullets = new List<GameObject>();
 
+    // 타이머 관련 변수
+    private float remainingTime = 60f; // 초기 타이머 값
+    private Coroutine timerCoroutine;
+
     void Start()
     {
         // 기본 총알 및 특수 총알 생성 시작 여부 설정
@@ -63,13 +67,12 @@ public class Stage2Script : MonoBehaviour
             StartCoroutine(SpawnSpecialBullets());
         }
 
-        StartCoroutine(LoadNextSceneAfterDelay(60f));
+        // 타이머 코루틴 시작
+        timerCoroutine = StartCoroutine(LoadNextSceneAfterDelay());
     }
 
-    IEnumerator LoadNextSceneAfterDelay(float delay)
+    IEnumerator LoadNextSceneAfterDelay()
     {
-        float remainingTime = delay;
-
         while (remainingTime > 0)
         {
             // 타이머 텍스트 업데이트
@@ -85,6 +88,20 @@ public class Stage2Script : MonoBehaviour
         // 타이머 종료 시 Stage3로 전환
         Debug.Log("Stage3로 전환합니다.");
         SceneManager.LoadScene("Stage3");
+    }
+
+    // 타이머 재설정 함수
+    public void ResetTimer(float newTime)
+    {
+        remainingTime = newTime;
+        Debug.Log($"Timer has been reset to {newTime} seconds.");
+
+        // 타이머 코루틴을 재시작
+        if (timerCoroutine != null)
+        {
+            StopCoroutine(timerCoroutine);
+        }
+        timerCoroutine = StartCoroutine(LoadNextSceneAfterDelay());
     }
 
     // 총알 충돌 처리
@@ -137,6 +154,18 @@ public class Stage2Script : MonoBehaviour
                 break;
             case "if":
                 StartContinuousBulletPattern();
+                break;
+            case "return":
+                // ReturnScript를 찾아서 타이머 재설정
+                ReturnScript returnScript = FindObjectOfType<ReturnScript>();
+                if(returnScript != null)
+                {
+                    returnScript.ResetTimer();
+                }
+                else
+                {
+                    Debug.LogError("ReturnScript not found in the scene.");
+                }
                 break;
 
             default:
@@ -240,26 +269,37 @@ public class Stage2Script : MonoBehaviour
                 continue;
             }
 
-            // 특수 총알 4개 생성
-            for (int i = 0; i < 5; i++) // 특수 총알 개수 고정: 4개
+            // 기본 총알 세트 생성
+            for (int i = 0; i < basicBulletsPerSet; i++) // 기본 총알 세트당 12개 생성
             {
-                // 랜덤한 X 위치에서 생성
+                // 랜덤한 X 위치에서 생성 (-6 ~ +6)
                 float spawnX = Random.Range(screenLeftX, screenRightX);
                 Vector3 spawnPosition = new Vector3(spawnX, screenTopY, 0f);
 
-                // 랜덤한 특수 총알 타입
-           
+                // 기본 총알 인스턴스 생성
                 GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+                bullet.tag = "Bullet"; // 기본 총알 태그 설정
+                // bullet.GetComponent<Bullet>().SetType(i % 2); // 필요시 타입 설정 (Bullet 스크립트 필요)
                 activeBullets.Add(bullet);
-                Debug.Log($"Special bullet of type {bulletPrefab} spawned at {spawnPosition}"); // 디버그 로그 추가
+                currentBasicBullets.Add(bullet);
+                Debug.Log($"Basic bullet spawned at {spawnPosition}"); // 디버그 로그 수정
+            }
 
-                // 랜덤 지연 시간과 속도 적용
-                float randomDelay = Random.Range(0.0f, 1.0f); // 지연 시간 0.0초 ~ 2.0초
+            // 생성된 총알을 아래로 이동시키는 코루틴 시작
+            foreach (GameObject bullet in currentBasicBullets)
+            {
+                float randomDelay = Random.Range(0.0f, 1.0f);
                 float fallSpeed = Random.Range(basicBulletFallSpeedMin, basicBulletFallSpeedMax);
                 StartCoroutine(DropBulletDown(bullet, randomDelay, fallSpeed));
             }
 
-            yield return new WaitForSeconds(specialBulletInterval);
+            currentBasicBullets.Clear();
+
+            // 모든 총알이 파괴될 때까지 대기
+            yield return new WaitUntil(() => activeBullets.Count == 0);
+
+            // 다음 총알 세트 생성 전에 기본BulletInterval 대기
+            yield return new WaitForSeconds(basicBulletInterval);
         }
     }
 
@@ -311,7 +351,7 @@ public class Stage2Script : MonoBehaviour
                 int bulletType = Random.Range(0, specialBullets.Length);
                 GameObject bullet = Instantiate(specialBullets[bulletType], spawnPosition, Quaternion.identity);
                 activeBullets.Add(bullet);
-                Debug.Log($"Special bullet of type {bulletType} spawned at {spawnPosition}"); // 디버그 로그 추가
+                Debug.Log($"Special bullet of type {bulletType} spawned at {spawnPosition}"); // 디버그 로그 유지
 
                 // 랜덤 지연 시간과 속도 적용
                 float randomDelay = Random.Range(0.0f, 2.0f); // 지연 시간 0.0초 ~ 2.0초
