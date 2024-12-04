@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
+
 
 public class Stage1Script : MonoBehaviour
 {
     public GameObject bulletPrefab;
+    public TextMeshProUGUI timerText;
     public Transform spawnPoint;
     public float moveInterval = 0.1f;
     private Vector3 horizontalStartPosition;
@@ -15,18 +18,31 @@ public class Stage1Script : MonoBehaviour
     {
         horizontalStartPosition = spawnPoint.position;
         StartCoroutine(GenerateHorizontalLine());
-        StartCoroutine(LoadNextSceneAfterDelay(5f));
+        StartCoroutine(LoadNextSceneAfterDelay(10f));
     }
-    IEnumerator LoadNextSceneAfterDelay(float delay)
+     IEnumerator LoadNextSceneAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
+        float remainingTime = delay;
 
-        // 콘솔에 메시지 출력
+        while (remainingTime > 0)
+        {
+            // 타이머 텍스트 업데이트
+            if (timerText != null)
+            {
+                timerText.text = $"{remainingTime:F1}"; // 소수점 1자리까지 표시
+            }
+
+            remainingTime -= Time.deltaTime;
+            yield return null; // 프레임마다 실행
+        }
+
+        // 타이머 종료 시 Stage2로 전환
         Debug.Log("Stage2로 전환합니다.");
-
-        // 씬 전환
-        SceneManager.LoadScene("Stage2"); // "Stage2" 씬으로 전환
+        SceneManager.LoadScene("Stage2");
     }
+
+    
+
     IEnumerator GenerateHorizontalLine()
     {
         currentBullets.Clear();
