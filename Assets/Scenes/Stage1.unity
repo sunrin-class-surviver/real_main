@@ -1298,7 +1298,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0:40
+  m_text: 40.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -1405,6 +1405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 8027378416922132267, guid: e7b5d0d454df0f74896f2db7c26e211f, type: 3}
+  timerText: {fileID: 1411218130}
   spawnPoint: {fileID: 1708351703}
   moveInterval: 0.1
 --- !u!4 &1442669031

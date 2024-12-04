@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using TMPro;
 public class Stage2Script : MonoBehaviour
 {
     // 총알 관리 변수
@@ -17,16 +17,18 @@ public class Stage2Script : MonoBehaviour
     // 총알 생성 간격 및 속도
     public float basicBulletInterval = 1f;
     public float basicBulletFallSpeedMin = 1f;
-    public float basicBulletFallSpeedMax = 20f;
+    public float basicBulletFallSpeedMax = 1f;
     public float specialBulletInterval = 1f;
-    public float specialBulletFallSpeedMin = 2f;
-    public float specialBulletFallSpeedMax = 10f;
+    public float specialBulletFallSpeedMin = 1f;
+    public float specialBulletFallSpeedMax = 1f;
 
     // 화면 경계
     public float screenLeftX = -10f;
     public float screenRightX = 10f;
     public float screenTopY = 10f;
     public float screenBottomY = -10f;
+
+    public float spacing = 1.5f; // 간격 설정
 
     // 총알 배치 관련 변수
     public float horizontalSpacing = 2f;
@@ -36,6 +38,8 @@ public class Stage2Script : MonoBehaviour
     private ForScript triangleBulletManager;
     private WhileScript cShapeBulletManager;
     private IfScript continuousBulletManager;
+
+    public TextMeshProUGUI timerText;
 
     // 총알 생성 상태
     private bool isSpawningBasicBullets = false;
@@ -59,17 +63,27 @@ public class Stage2Script : MonoBehaviour
             StartCoroutine(SpawnSpecialBullets());
         }
 
-        StartCoroutine(LoadNextSceneAfterDelay(5f));
+        StartCoroutine(LoadNextSceneAfterDelay(60f));
     }
     IEnumerator LoadNextSceneAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
+        float remainingTime = delay;
 
-        // 콘솔에 메시지 출력
+        while (remainingTime > 0)
+        {
+            // 타이머 텍스트 업데이트
+            if (timerText != null)
+            {
+                timerText.text = $"{remainingTime:F1}"; // 소수점 1자리까지 표시
+            }
+
+            remainingTime -= Time.deltaTime;
+            yield return null; // 프레임마다 실행
+        }
+
+        // 타이머 종료 시 Stage2로 전환
         Debug.Log("Stage3로 전환합니다.");
-
-        // 씬 전환
-        SceneManager.LoadScene("Stage3"); // "Stage2" 씬으로 전환
+        SceneManager.LoadScene("Stage3");
     }
 
     // 총알 충돌 처리
@@ -83,6 +97,9 @@ public class Stage2Script : MonoBehaviour
             StartCoroutine(DeleteBulletsAndStartFunction(bulletType));
         }
     }
+
+
+
 
     private IEnumerator DeleteBulletsAndStartFunction(string bulletType)
     {
@@ -211,84 +228,87 @@ public class Stage2Script : MonoBehaviour
     }
 
     // 특별 총알 생성
+    IEnumerator SpawnBasicBullets()
+    {
+        while (true)
+        {
+            if (isSpecialBulletFunctionRunning)
+            {
+                yield return null;
+                continue;
+            }
+
+            // 총알 생성
+            for (int i = 0; i < 16; i++) // 총알 개수 고정: 16개
+            {
+                // 좌우로 균등하게 배치
+                float spawnX = Mathf.Lerp(screenLeftX, screenRightX, i / 15f);
+                Vector3 spawnPosition = new Vector3(spawnX, screenTopY, 0f);
+
+                // 총알 생성
+                GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+                activeBullets.Add(bullet);
+
+                // 랜덤 지연 시간 적용
+                float randomDelay = Random.Range(0.1f, 5.0f); // 지연 시간 0.1초 ~ 5.0초
+                StartCoroutine(DropBulletDownWithDelay(bullet, randomDelay));
+            }
+
+            yield return new WaitForSeconds(basicBulletInterval);
+        }
+    }
+
     IEnumerator SpawnSpecialBullets()
     {
-        while (isSpawningSpecialBullets)
+        while (true)
         {
-            if (isSpecialBulletFunctionRunning) // 특수 기능이 실행 중이면 생성하지 않음
+            if (isSpecialBulletFunctionRunning)
             {
-                yield return null; // 대기
-                continue; // 특수 총알 생성 루프를 다시 시작
+                yield return null;
+                continue;
             }
 
-            int numberOfBullets = Random.Range(1, 6);
-
-            for (int i = 0; i < numberOfBullets; i++)
+            // 특수 총알 생성
+            for (int i = 0; i < 4; i++) // 특수 총알 개수 고정: 4개
             {
+                // 좌우로 균등하게 배치
+                float spawnX = Mathf.Lerp(screenLeftX, screenRightX, i / 3f);
+                Vector3 spawnPosition = new Vector3(spawnX, screenTopY, 0f);
+
+                // 랜덤한 특수 총알 타입
                 int bulletType = Random.Range(0, specialBullets.Length);
-                float randomX = Random.Range(screenLeftX, screenRightX);
-                float spawnY = Camera.main.orthographicSize;
-                Vector3 spawnPosition = new Vector3(randomX, spawnY, 0f);
+                GameObject bullet = Instantiate(specialBullets[bulletType], spawnPosition, Quaternion.identity);
+                activeBullets.Add(bullet);
 
-                // 위치가 겹치지 않도록 확인
-                if (!IsPositionOccupied(spawnPosition))
-                {
-                    // 총알을 겹치지 않는 위치에 생성
-                    GameObject bulletPrefab = specialBullets[bulletType];
-                    GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
-                    bullet.tag = bulletPrefab.tag;
-                    activeBullets.Add(bullet);
-
-                    // 총알 떨어지는 속도 설정
-                    float randomFallSpeed = Random.Range(specialBulletFallSpeedMin, specialBulletFallSpeedMax);
-                    StartCoroutine(MoveBulletDown(bullet, randomFallSpeed));
-                }
-                else
-                {
-                    // 겹치는 위치에 총알이 있어 다시 생성 시도
-                    i--;  // 한번 더 시도하도록 하여 겹치지 않는 위치로 총알이 생성되도록 함
-                }
+                // 랜덤 지연 시간 적용
+                float randomDelay = Random.Range(0.1f, 5.0f); // 지연 시간 0.1초 ~ 5.0초
+                StartCoroutine(DropBulletDownWithDelay(bullet, randomDelay));
             }
 
-            // 총알 생성 간격 설정
             yield return new WaitForSeconds(specialBulletInterval);
         }
     }
 
-    // 기본 총알 생성
-    IEnumerator SpawnBasicBullets()
+    IEnumerator DropBulletDownWithDelay(GameObject bullet, float delay)
     {
-        while (true)  // 무한 루프, 총알을 계속 생성하게 만듬
+        // 랜덤 지연 시간 대기
+        yield return new WaitForSeconds(delay);
+
+        // 랜덤 속도 설정
+        float fallSpeed = Random.Range(basicBulletFallSpeedMin, basicBulletFallSpeedMax);
+
+        // 총알 아래로 이동
+        while (bullet != null && bullet.transform.position.y > screenBottomY)
         {
-            if (isSpecialBulletFunctionRunning) // 특수 기능이 실행 중이면 기본 총알 생성 멈춤
-            {
-                yield return null; // 대기
-                continue; // 기본 총알 생성 루프를 다시 시작
-            }
+            bullet.transform.Translate(Vector3.down * fallSpeed * Time.deltaTime);
+            yield return null;
+        }
 
-            float screenWidth = (screenRightX - screenLeftX); // 화면 너비
-            int totalBullets = Mathf.FloorToInt(screenWidth / horizontalSpacing) + 5; // 총알이 들어갈 수 있는 개수
-
-            for (int i = 0; i < totalBullets; i++)
-            {
-                float randomX = Random.Range(screenLeftX, screenRightX);
-                float randomY = Camera.main.orthographicSize;
-                Vector3 spawnPosition = new Vector3(randomX, randomY, 0f);
-
-                // 위치가 겹치지 않도록 확인
-                if (!IsPositionOccupied(spawnPosition))
-                {
-                    GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
-                    bullet.tag = "Bullet_Stage2";  // 기본 총알 태그 설정
-                    activeBullets.Add(bullet);
-
-                    // 총알 속도 설정
-                    float randomFallSpeed = Random.Range(basicBulletFallSpeedMin, basicBulletFallSpeedMax);
-                    StartCoroutine(MoveBulletDown(bullet, randomFallSpeed));
-                }
-            }
-
-            yield return new WaitForSeconds(basicBulletInterval);
+        // 화면을 벗어나면 총알 삭제
+        if (bullet != null)
+        {
+            Destroy(bullet);
+            activeBullets.Remove(bullet);
         }
     }
 
@@ -305,11 +325,11 @@ public class Stage2Script : MonoBehaviour
     }
 
     // 위치가 겹치지 않는지 확인
-    private bool IsPositionOccupied(Vector3 position)
+    private bool IsPositionOccupied(Vector3 position, float radius)
     {
         foreach (GameObject bullet in activeBullets)
         {
-            if (bullet != null && bullet.transform.position == position)
+            if (bullet != null && Vector3.Distance(bullet.transform.position, position) < radius)
             {
                 return true;
             }
