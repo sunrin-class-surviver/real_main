@@ -16,12 +16,12 @@ public class Stage2Script : MonoBehaviour
     public GameObject[] specialBullets;
 
     // 총알 생성 간격 및 속도
-    public float basicBulletInterval = 1f; // 기본 총알 세트 생성 간격
+    public float basicBulletSpawnInterval = 0.1f; // 기본 총알 생성 간격 (초당 10개)
     public float basicBulletFallSpeedMin = 1f;
-    public float basicBulletFallSpeedMax = 1f;
-    public float specialBulletInterval = 1f; // 특수 총알 생성 간격
+    public float basicBulletFallSpeedMax = 3f; // 속도 범위를 확장하여 가속 가능성 고려
+    public float specialBulletInterval = 5f; // 특수 총알 생성 간격
     public float specialBulletFallSpeedMin = 1f;
-    public float specialBulletFallSpeedMax = 1f;
+    public float specialBulletFallSpeedMax = 2f;
 
     // 화면 경계
     public float screenLeftX = -6f;
@@ -41,14 +41,13 @@ public class Stage2Script : MonoBehaviour
     private bool isSpawningSpecialBullets = false;
     private bool isSpecialBulletFunctionRunning = false; // 특수 기능 실행 중 여부
 
-    // 기본 총알 생성 관련 변수
-    public int basicBulletsPerSet = 12; // 기본 총알 세트당 생성할 총알 수
-
-    private List<GameObject> currentBasicBullets = new List<GameObject>();
-
     // 타이머 관련 변수
     private float remainingTime = 60f; // 초기 타이머 값
     private Coroutine timerCoroutine;
+
+    // Coroutine 핸들
+    private Coroutine generateBasicBulletsCoroutine;
+    private Coroutine spawnSpecialBulletsCoroutine;
 
     void Start()
     {
@@ -56,23 +55,29 @@ public class Stage2Script : MonoBehaviour
         isSpawningBasicBullets = true;
         isSpawningSpecialBullets = true;
 
-        if (isSpawningBasicBullets)
+        // 기본 총알 생성 Coroutine 시작
+        if (isSpawningBasicBullets && generateBasicBulletsCoroutine == null)
         {
-            StartCoroutine(GenerateBasicBullets());
+            generateBasicBulletsCoroutine = StartCoroutine(GenerateBasicBullets());
+            Debug.Log("Started GenerateBasicBullets Coroutine in Start()");
         }
 
-        // 필요에 따라 특수 총알 생성 루프 시작
-        if (isSpawningSpecialBullets)
+        // 특수 총알 생성 Coroutine 시작
+        if (isSpawningSpecialBullets && spawnSpecialBulletsCoroutine == null)
         {
-            StartCoroutine(SpawnSpecialBullets());
+            spawnSpecialBulletsCoroutine = StartCoroutine(SpawnSpecialBullets());
+            Debug.Log("Started SpawnSpecialBullets Coroutine in Start()");
         }
 
-        // 타이머 코루틴 시작
+        // 타이머 Coroutine 시작
         timerCoroutine = StartCoroutine(LoadNextSceneAfterDelay());
+        Debug.Log("Started LoadNextSceneAfterDelay Coroutine in Start()");
     }
 
     IEnumerator LoadNextSceneAfterDelay()
     {
+        Debug.Log("LoadNextSceneAfterDelay Coroutine started.");
+
         while (remainingTime > 0)
         {
             // 타이머 텍스트 업데이트
@@ -96,12 +101,14 @@ public class Stage2Script : MonoBehaviour
         remainingTime = newTime;
         Debug.Log($"Timer has been reset to {newTime} seconds.");
 
-        // 타이머 코루틴을 재시작
+        // 타이머 Coroutine을 재시작
         if (timerCoroutine != null)
         {
             StopCoroutine(timerCoroutine);
+            Debug.Log("Stopped previous LoadNextSceneAfterDelay Coroutine.");
         }
         timerCoroutine = StartCoroutine(LoadNextSceneAfterDelay());
+        Debug.Log("Started new LoadNextSceneAfterDelay Coroutine after ResetTimer.");
     }
 
     // 총알 충돌 처리
@@ -113,6 +120,7 @@ public class Stage2Script : MonoBehaviour
         if (!isSpecialBulletFunctionRunning)  // 특수 기능이 실행 중이 아니면 실행
         {
             StartCoroutine(DeleteBulletsAndStartFunction(bulletType));
+            Debug.Log($"Started DeleteBulletsAndStartFunction Coroutine for bulletType: {bulletType}");
         }
     }
 
@@ -120,6 +128,7 @@ public class Stage2Script : MonoBehaviour
     {
         // 특수 기능 실행 중이라면 추가 총알 생성 막기
         isSpecialBulletFunctionRunning = true;
+        Debug.Log("isSpecialBulletFunctionRunning set to true.");
 
         // 모든 총알 삭제
         foreach (GameObject bullet in activeBullets)
@@ -127,13 +136,15 @@ public class Stage2Script : MonoBehaviour
             if (bullet != null)
             {
                 Destroy(bullet);
-                Debug.Log("Bullet destroyed");
+                Debug.Log($"Bullet destroyed: {bullet.name}");
             }
         }
         activeBullets.Clear();
+        Debug.Log("All activeBullets cleared.");
 
         // 2초 대기
         yield return new WaitForSeconds(2f);
+        Debug.Log("Waited 2 seconds in DeleteBulletsAndStartFunction.");
 
         // 특수 총알에 맞은 총알 타입에 따라 특수 기능 시작
         switch (bulletType)
@@ -158,9 +169,9 @@ public class Stage2Script : MonoBehaviour
             case "return":
                 // ReturnScript를 찾아서 타이머 재설정
                 ReturnScript returnScript = FindObjectOfType<ReturnScript>();
-                if(returnScript != null)
+                if (returnScript != null)
                 {
-                    returnScript.ResetTimer();
+                    returnScript.ResetTimer(); // 40초로 타이머 재설정
                 }
                 else
                 {
@@ -175,25 +186,39 @@ public class Stage2Script : MonoBehaviour
 
         // 특수 기능 실행 후 5초 대기
         yield return new WaitForSeconds(5f);
+        Debug.Log("Waited 5 seconds after special function.");
 
         // 특수 총알 다시 생성 시작
         isSpecialBulletFunctionRunning = false;
+        Debug.Log("isSpecialBulletFunctionRunning set to false.");
 
         // 특수 패턴 종료 후, 기본 총알과 특수 총알 생성 재개
         StartCoroutine(ResumeBulletSpawningAfterDelay(2f)); // 2초 후 재개
+        Debug.Log("Started ResumeBulletSpawningAfterDelay Coroutine.");
     }
 
     // 특수 패턴 종료 후, 기본 총알과 특수 총알 생성을 재개
     private IEnumerator ResumeBulletSpawningAfterDelay(float delay)
     {
+        Debug.Log($"ResumeBulletSpawningAfterDelay Coroutine started with delay {delay} seconds.");
         yield return new WaitForSeconds(delay);
 
         // 기본 총알 및 특수 총알 생성 다시 시작
         isSpawningBasicBullets = true;
         isSpawningSpecialBullets = true;
+        Debug.Log("isSpawningBasicBullets and isSpawningSpecialBullets set to true.");
 
-        StartCoroutine(GenerateBasicBullets());
-        StartCoroutine(SpawnSpecialBullets());
+        if (isSpawningBasicBullets && generateBasicBulletsCoroutine == null)
+        {
+            generateBasicBulletsCoroutine = StartCoroutine(GenerateBasicBullets());
+            Debug.Log("Started GenerateBasicBullets Coroutine in ResumeBulletSpawningAfterDelay.");
+        }
+
+        if (isSpawningSpecialBullets && spawnSpecialBulletsCoroutine == null)
+        {
+            spawnSpecialBulletsCoroutine = StartCoroutine(SpawnSpecialBullets());
+            Debug.Log("Started SpawnSpecialBullets Coroutine in ResumeBulletSpawningAfterDelay.");
+        }
     }
 
     // For 총알 패턴 시작
@@ -244,16 +269,19 @@ public class Stage2Script : MonoBehaviour
     // 2초 뒤에 계속되는 총알 패턴을 멈추는 함수
     private IEnumerator StopContinuousBulletPatternAfterDelay(float delay)
     {
+        Debug.Log($"StopContinuousBulletPatternAfterDelay Coroutine started with delay {delay} seconds.");
         yield return new WaitForSeconds(delay);
 
         // 총알 생성 멈추기
         if (continuousBulletManager != null)
         {
             continuousBulletManager.StopBulletGeneration();
+            Debug.Log("continuousBulletManager.StopBulletGeneration() called.");
         }
 
         // 특수 기능을 멈추고, 더 이상 생성하지 않도록 설정
         StopSpawningSpecialBullets();
+        Debug.Log("Stopped spawning special bullets in StopContinuousBulletPatternAfterDelay.");
     }
 
     // 기본 총알 생성 및 이동
@@ -263,44 +291,38 @@ public class Stage2Script : MonoBehaviour
 
         while (isSpawningBasicBullets)
         {
+            Debug.Log($"GenerateBasicBullets loop: isSpecialBulletFunctionRunning = {isSpecialBulletFunctionRunning}, activeBullets.Count = {activeBullets.Count}");
+
             if (isSpecialBulletFunctionRunning)
             {
                 yield return null;
                 continue;
             }
 
-            // 기본 총알 세트 생성
-            for (int i = 0; i < basicBulletsPerSet; i++) // 기본 총알 세트당 12개 생성
-            {
-                // 랜덤한 X 위치에서 생성 (-6 ~ +6)
-                float spawnX = Random.Range(screenLeftX, screenRightX);
-                Vector3 spawnPosition = new Vector3(spawnX, screenTopY, 0f);
+            // 기본 총알 생성
+            float spawnX = Random.Range(screenLeftX, screenRightX);
+            Vector3 spawnPosition = new Vector3(spawnX, screenTopY, 0f);
 
-                // 기본 총알 인스턴스 생성
-                GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
-                bullet.tag = "Bullet"; // 기본 총알 태그 설정
-                // bullet.GetComponent<Bullet>().SetType(i % 2); // 필요시 타입 설정 (Bullet 스크립트 필요)
-                activeBullets.Add(bullet);
-                currentBasicBullets.Add(bullet);
-                Debug.Log($"Basic bullet spawned at {spawnPosition}"); // 디버그 로그 수정
-            }
+            // 기본 총알 인스턴스 생성
+            GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+            bullet.tag = "Bullet"; // 기본 총알 태그 설정
+            activeBullets.Add(bullet);
+            Debug.Log($"Basic bullet spawned at {spawnPosition}"); // 디버그 로그 수정
 
-            // 생성된 총알을 아래로 이동시키는 코루틴 시작
-            foreach (GameObject bullet in currentBasicBullets)
-            {
-                float randomDelay = Random.Range(0.0f, 1.0f);
-                float fallSpeed = Random.Range(basicBulletFallSpeedMin, basicBulletFallSpeedMax);
-                StartCoroutine(DropBulletDown(bullet, randomDelay, fallSpeed));
-            }
+            // 기본 총알 이동 Coroutine 시작
+            float randomDelay = Random.Range(0.0f, 1.0f);
+            float fallSpeed = Random.Range(basicBulletFallSpeedMin, basicBulletFallSpeedMax);
+            StartCoroutine(DropBulletDown(bullet, randomDelay, fallSpeed));
+            Debug.Log($"Started DropBulletDown for {bullet.name} with delay {randomDelay} and fallSpeed {fallSpeed}");
 
-            currentBasicBullets.Clear();
-
-            // 모든 총알이 파괴될 때까지 대기
-            yield return new WaitUntil(() => activeBullets.Count == 0);
-
-            // 다음 총알 세트 생성 전에 기본BulletInterval 대기
-            yield return new WaitForSeconds(basicBulletInterval);
+            // 다음 총알 생성 전에 basicBulletSpawnInterval 대기
+            Debug.Log($"Waiting for basicBulletSpawnInterval: {basicBulletSpawnInterval} seconds.");
+            yield return new WaitForSeconds(basicBulletSpawnInterval);
         }
+
+        // Coroutine이 종료될 때 핸들 초기화
+        Debug.Log("GenerateBasicBullets coroutine ended.");
+        generateBasicBulletsCoroutine = null;
     }
 
     IEnumerator DropBulletDown(GameObject bullet, float delay, float fallSpeed)
@@ -321,9 +343,13 @@ public class Stage2Script : MonoBehaviour
 
         if (bullet != null)
         {
-            activeBullets.Remove(bullet);
+            if (activeBullets.Contains(bullet))
+            {
+                activeBullets.Remove(bullet);
+                Debug.Log($"Removed bullet from activeBullets: {bullet.name}");
+            }
             Destroy(bullet);
-            Debug.Log("Basic bullet destroyed");
+            Debug.Log($"Basic bullet destroyed: {bullet.name}");
         }
     }
 
@@ -334,6 +360,8 @@ public class Stage2Script : MonoBehaviour
 
         while (isSpawningSpecialBullets)
         {
+            Debug.Log($"SpawnSpecialBullets loop: isSpecialBulletFunctionRunning = {isSpecialBulletFunctionRunning}, activeBullets.Count = {activeBullets.Count}");
+
             if (isSpecialBulletFunctionRunning)
             {
                 yield return null;
@@ -357,10 +385,13 @@ public class Stage2Script : MonoBehaviour
                 float randomDelay = Random.Range(0.0f, 2.0f); // 지연 시간 0.0초 ~ 2.0초
                 float fallSpeed = Random.Range(specialBulletFallSpeedMin, specialBulletFallSpeedMax);
                 StartCoroutine(DropSpecialBullet(bullet, randomDelay, fallSpeed));
+                Debug.Log($"Started DropSpecialBullet for {bullet.name} with delay {randomDelay} and fallSpeed {fallSpeed}");
             }
 
             yield return new WaitForSeconds(specialBulletInterval);
         }
+
+        Debug.Log("SpawnSpecialBullets coroutine ended.");
     }
 
     IEnumerator DropSpecialBullet(GameObject bullet, float delay, float fallSpeed)
@@ -381,9 +412,13 @@ public class Stage2Script : MonoBehaviour
 
         if (bullet != null)
         {
-            activeBullets.Remove(bullet);
+            if (activeBullets.Contains(bullet))
+            {
+                activeBullets.Remove(bullet);
+                Debug.Log($"Removed special bullet from activeBullets: {bullet.name}");
+            }
             Destroy(bullet);
-            Debug.Log("Special bullet destroyed");
+            Debug.Log($"Special bullet destroyed: {bullet.name}");
         }
     }
 
@@ -392,11 +427,27 @@ public class Stage2Script : MonoBehaviour
     {
         isSpawningBasicBullets = false;
         Debug.Log("Stopped spawning basic bullets");
+
+        // Coroutine 핸들 중지
+        if (generateBasicBulletsCoroutine != null)
+        {
+            StopCoroutine(generateBasicBulletsCoroutine);
+            generateBasicBulletsCoroutine = null;
+            Debug.Log("Stopped GenerateBasicBullets Coroutine.");
+        }
     }
 
     private void StopSpawningSpecialBullets()
     {
         isSpawningSpecialBullets = false;
         Debug.Log("Stopped spawning special bullets");
+
+        // Coroutine 핸들 중지
+        if (spawnSpecialBulletsCoroutine != null)
+        {
+            StopCoroutine(spawnSpecialBulletsCoroutine);
+            spawnSpecialBulletsCoroutine = null;
+            Debug.Log("Stopped SpawnSpecialBullets Coroutine.");
+        }
     }
 }

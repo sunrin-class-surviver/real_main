@@ -1092,18 +1092,17 @@ MonoBehaviour:
   - {fileID: 8166462084527474099, guid: 5069364b0d66e274f8896e86d5482151, type: 3}
   - {fileID: 8195028310422242863, guid: 4ada129f9402d4b439508cccca3b6d04, type: 3}
   - {fileID: 1234346414783867545, guid: b5906f32c9d1eb7459fa5a217ff870b1, type: 3}
-  basicBulletInterval: 0
-  basicBulletFallSpeedMin: 1
-  basicBulletFallSpeedMax: 2
+  basicBulletSpawnInterval: 0.1
+  basicBulletFallSpeedMin: 3
+  basicBulletFallSpeedMax: 5
   specialBulletInterval: 1
-  specialBulletFallSpeedMin: 2
-  specialBulletFallSpeedMax: 3
+  specialBulletFallSpeedMin: 4
+  specialBulletFallSpeedMax: 5
   screenLeftX: -8
   screenRightX: 8
   screenTopY: 10
   screenBottomY: -10
   timerText: {fileID: 895680100}
-  basicBulletsPerSet: 12
 --- !u!4 &1492431262
 Transform:
   m_ObjectHideFlags: 0
@@ -1856,7 +1855,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  stage2Script: {fileID: 0}
   gameoverPanel: {fileID: 1933448214}
 --- !u!61 &2021285910
 BoxCollider2D:
