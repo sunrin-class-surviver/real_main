@@ -1155,10 +1155,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "\uC81C\uBC1C"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f89aa5bbd722bd34ba838b10882d6a9c, type: 2}
+  m_sharedMaterial: {fileID: 4632906977407648314, guid: f89aa5bbd722bd34ba838b10882d6a9c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2485,7 +2485,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.028696358, y: -0.051772118}
+  m_Offset: {x: 0.028696358, y: 0.08771694}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2496,7 +2496,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.63295615, y: 0.70696974}
+  m_Size: {x: 0.63295615, y: 2.1018608}
   m_EdgeRadius: 0
 --- !u!50 &1588136527
 Rigidbody2D:
@@ -2535,7 +2535,7 @@ Animator:
   m_GameObject: {fileID: 1588136522}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 727aca5fc2590574a9900d979eaf9c22, type: 2}
+  m_Controller: {fileID: 9100000, guid: d83b77f821d44f14dade33239528a653, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2560,6 +2560,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerText: {fileID: 0}
   moveSpeed: 7
+  stage2Script: {fileID: 0}
   gameoverPanel: {fileID: 0}
 --- !u!1 &1591637584
 GameObject:
