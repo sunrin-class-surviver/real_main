@@ -1,5 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
+
 
 public class Stage3Manager : MonoBehaviour
 {
@@ -9,6 +12,7 @@ public class Stage3Manager : MonoBehaviour
     public GameObject gameOverPanel; // 게임 오버 패널
     private bool isGameOver = false;
 
+    public TextMeshProUGUI timerText;
     public GameObject jsPrefab; // JS 프리팹
     public float spawnInterval = 1.5f; // JS 생성 간격
     public float spawnXMin = -9f; // X 좌표 최소값
@@ -22,6 +26,28 @@ public class Stage3Manager : MonoBehaviour
     {
         ShowRandomImageAndBlackBar();
         InvokeRepeating(nameof(SpawnJS), 0f, spawnInterval); // JS를 일정 간격으로 생성
+        StartCoroutine(LoadNextSceneAfterDelay(10f));
+    }
+
+     IEnumerator LoadNextSceneAfterDelay(float delay)
+    {
+        float remainingTime = delay;
+
+        while (remainingTime > 0)
+        {
+            // 타이머 텍스트 업데이트
+            if (timerText != null)
+            {
+                timerText.text = $"{remainingTime:F1}"; // 소수점 1자리까지 표시
+            }
+
+            remainingTime -= Time.deltaTime;
+            yield return null; // 프레임마다 실행
+        }
+
+        // 타이머 종료 시 Stage2로 전환
+        Debug.Log("Stage2Connection으로 전환합니다.");
+        SceneManager.LoadScene("Stage2Connection");
     }
 
     // 이미지와 검정색 영역을 랜덤으로 보여주는 함수
