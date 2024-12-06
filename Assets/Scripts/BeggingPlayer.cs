@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class BegginingPlayer : MonoBehaviour
+public class BeggingPlayer : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator animator; // Animator 컴포넌트
@@ -10,18 +10,10 @@ public class BegginingPlayer : MonoBehaviour
 
     public GameObject gameoverPanel; // Game Over Panel
 
-    private Vector2 movement;
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>(); // Rigidbody2D 컴포넌트를 가져옴
         animator = GetComponent<Animator>(); // Animator 컴포넌트를 가져옴
-    }
-
-    private void Start()
-    {
-        animator.SetFloat("X", 0);
-        animator.SetFloat("Y", -1); // 기본 방향을 Back으로 설정하려면 -1로 초기화
     }
 
     private void FixedUpdate()
@@ -30,44 +22,29 @@ public class BegginingPlayer : MonoBehaviour
         {
             float moveX = Input.GetAxisRaw("Horizontal");
             float moveY = Input.GetAxisRaw("Vertical");
-            movement = new Vector2(moveX, moveY).normalized;
+            Vector2 moveDirection = new Vector2(moveX, moveY).normalized;
+            rb.velocity = moveDirection * moveSpeed;
 
-            Debug.Log("Movement: " + movement); // 디버깅 출력
-
-            if (movement != Vector2.zero)
-            {
-                rb.velocity = movement * moveSpeed; // 이동 처리
-            }
-            else
-            {
-                rb.velocity = Vector2.zero; // 멈춤 처리
-            }
+            UpdateAnimation(moveX, moveY); // 이동 방향에 따라 애니메이션 갱신
         }
         else
         {
-            rb.velocity = Vector2.zero; // 멈추기
+            rb.velocity = Vector2.zero; // 움직이지 않게끔 속도 0으로 설정
         }
-
-        onMovement(); // 이동 상태와 애니메이션 갱신
     }
 
-    private void onMovement()
+    // 애니메이션 업데이트 함수
+    private void UpdateAnimation(float moveX, float moveY)
     {
-        if (movement.x != 0 || movement.y != 0) // 이동 중
+        if (animator != null)
         {
-            animator.SetFloat("X", movement.x);
-            animator.SetFloat("Y", movement.y);
-            animator.SetBool("IsMoving", true); // 이동 상태
+            animator.SetFloat("X", moveX);
+            animator.SetFloat("Y", moveY);
+            animator.SetBool("IsMoving", moveX != 0 || moveY != 0); // 움직이는지 여부
         }
-        else // 멈춤
+        else
         {
-            animator.SetBool("IsMoving", false); // Idle 상태
-
-            // IsMoving이 false일 때 모든 애니메이션을 멈추는 방법
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-            {
-                animator.Play("Idle", 0, 0f); // Idle 상태로 애니메이션 재생
-            }
+            Debug.LogError("Animator is not assigned!");
         }
     }
 
