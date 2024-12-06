@@ -2104,7 +2104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e92b47bcec8f1a49acd794b604bccfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogues: []
+  dialogues:
+  - 
   dialogueText: {fileID: 1572505732}
   endingImage: {fileID: 1706718567}
   Image: {fileID: 1102688926}
