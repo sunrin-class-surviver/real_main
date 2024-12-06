@@ -1,40 +1,48 @@
 using System.Collections;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
+using TMPro;
 public class BeggingPlayer : MonoBehaviour
 {
     private Rigidbody2D rb;
+
+    public TextMeshProUGUI timerText;
+
     private Animator animator; // Animator 컴포넌트
     public float moveSpeed = 7f; // 이동 속도
     private bool canMove = true; // 플레이어가 움직일 수 있는지 여부
 
     public GameObject gameoverPanel; // Game Over Panel
 
-<<<<<<< Updated upstream
-=======
     private Vector2 movement;
     private Vector2 lastDirection = Vector2.down; // 초기 방향을 아래쪽으로 설정
 
->>>>>>> Stashed changes
+
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>(); // Rigidbody2D 컴포넌트를 가져옴
         animator = GetComponent<Animator>(); // Animator 컴포넌트를 가져옴
     }
 
-<<<<<<< Updated upstream
-=======
     private void Start()
     {
         // 초기 애니메이션 파라미터 설정
         animator.SetBool("IsMoving", false);
         animator.SetFloat("X", lastDirection.x);
         animator.SetFloat("Y", lastDirection.y);
+       
 
         Debug.Log("Start() called. Initial lastDirection: " + lastDirection + ", IsMoving: false");
     }
 
->>>>>>> Stashed changes
+    public void LoadNextSceneAfterDelay()
+    {
+        // 타이머 종료 시 Stage2로 전환
+        Debug.Log("Stage1Connection으로 전환합니다.");
+        SceneManager.LoadScene("Stage1Connection");
+    }
+
     private void FixedUpdate()
     {
         if (canMove) // canMove가 true일 때만 이동 가능
@@ -57,11 +65,9 @@ public class BeggingPlayer : MonoBehaviour
     {
         if (animator != null)
         {
-<<<<<<< Updated upstream
             animator.SetFloat("X", moveX);
             animator.SetFloat("Y", moveY);
             animator.SetBool("IsMoving", moveX != 0 || moveY != 0); // 움직이는지 여부
-=======
             lastDirection = movement; // 마지막 이동 방향 업데이트
 
             // 모든 트리거 리셋
@@ -94,13 +100,10 @@ public class BeggingPlayer : MonoBehaviour
             animator.SetBool("IsMoving", true); // 이동 상태 설정
 
             Debug.Log("Animator Parameters - X: " + movement.x + ", Y: " + movement.y + ", IsMoving: true");
->>>>>>> Stashed changes
         }
         else
         {
-<<<<<<< Updated upstream
             Debug.LogError("Animator is not assigned!");
-=======
             animator.SetBool("IsMoving", false); // Idle 상태
             animator.SetFloat("X", lastDirection.x); // 마지막 이동 방향 유지
             animator.SetFloat("Y", lastDirection.y); // 마지막 이동 방향 유지
@@ -113,7 +116,6 @@ public class BeggingPlayer : MonoBehaviour
                 animator.Play("Idle", 0, 0f); // Idle 상태로 애니메이션 재생
                 Debug.Log("Animator transitioned to Idle state.");
             }
->>>>>>> Stashed changes
         }
 
         // 현재 재생 중인 애니메이션 클립 로그 출력

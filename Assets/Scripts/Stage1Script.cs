@@ -37,8 +37,8 @@ public class Stage1Script : MonoBehaviour
         }
 
         // 타이머 종료 시 Stage2로 전환
-        Debug.Log("Stage2로 전환합니다.");
-        SceneManager.LoadScene("Stage2");
+        Debug.Log("Stage2Connection으로 전환합니다.");
+        SceneManager.LoadScene("Stage2Connection");
     }
 
     

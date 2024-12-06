@@ -1133,7 +1133,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 151.32239, y: -24.9203}
-  m_SizeDelta: {x: 484.1752, y: 146.0143}
+  m_SizeDelta: {x: 500, y: 146.0143}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &701116322
 MonoBehaviour:
@@ -1155,7 +1155,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1182,8 +1182,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1777,6 +1777,76 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1161361111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1161361112}
+  - component: {fileID: 1161361113}
+  m_Layer: 0
+  m_Name: Beginning
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1161361112
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1161361111}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1161361113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1161361111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4bccfd8831cb984a8cc55c7da475854, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogues:
+  - dialogueText: "\uB2F4\uC784 \uC120\uC0DD\uB2D8 :  \uC598\uB4E4\uC544~ \uC77C\uC5B4\uB098\uC790~ "
+  - dialogueText: "\uC8FC\uC778\uACF5 : (\uBE44\uCC99\uBE44\uCC99 \uC77C\uC5B4\uB0AC\uB2E4\uAC00
+      \uD2B9\uBCC4\uD55C \uC804\uB2EC\uC0AC\uD56D\uC774 \uC5C6\uC5B4\uBCF4\uC5EC
+      \uB2E4\uC2DC \uC790\uB824\uACE0 \uD55C\uB2E4.) "
+  - dialogueText: "\uB2F4\uC784 \uC120\uC0DD\uB2D8 : \uC5B4\uD5C8. \uC624\uB298 3\uAD50\uC2DC
+      \uB2E8\uCD95\uC778\uAC70 \uC54C\uACE0 \uC788\uC9C0? \uADF8\uB798\uC11C 1~3\uAD50\uC2DC\uAC00
+      \uBCC0\uACBD\uB418\uC5C8\uC5B4\uC694. "
+  - dialogueText: "\uC8FC\uC778\uACF5 : \u2018\uBB50\uC57C \uC624\uB298 \uB2E8\uCD95\uC774\uC5C8\uC5B4??
+      \uC544\uC2F8\u2019 "
+  - dialogueText: "\uB2F4\uC784 \uC120\uC0DD\uB2D8 : 1\uAD50\uC2DC\uAC00 \uCEF4\uC2DC\uC77C\uC774\uACE0,
+      2\uAD50\uC2DC\uAC00 \uD504\uBC0D, 3\uAD50\uC2DC\uAC00 \uC6F9\uD504\uC785\uB2C8\uB2E4.
+      \uCE74\uD1A1\uBC29\uC5D0 \uC62C\uB824\uB1A8\uC5B4\uC694. 1\uAD50\uC2DC \uCEF4\uC2DC\uC77C\uC774\uBA74
+      \uC774\uB3D9\uC778\uAC00? "
+  - dialogueText: "\uBC18\uC560\uB4E4 : \uC544\uB2C8\uC694~ "
+  - dialogueText: "\uD68C\uC7A5 : \uAD50\uC2E4\uC785\uB2C8\uB2E4! "
+  - dialogueText: "\uB2F4\uC784 \uC120\uC0DD\uB2D8 : \uC544 \uADF8\uB798? \uADF8\uB7FC
+      \uC218\uC5C5 \uC798 \uB4E4\uC5B4~ "
+  - dialogueText: "\uBC18\uC560\uB4E4 : \uC548\uB155\uD788\uAC00\uC138\uC694 "
+  - dialogueText: "\uC8FC\uC778\uACF5 : \u2018\uC5B4\uC81C \uBC24\uC0C8\uC11C \uB108\uBB34
+      \uC878\uB9B0\uB370 \uB354 \uC790\uC57C\uACA0\uB2E4. "
+  - dialogueText: "\uC8FC\uC778\uACF5 : \uC544 \uB9DE\uB2E4 \uC0DD\uAC01\uD574\uBCF4\uB2C8\uAE4C
+      \uB098 \uC800\uBC88 \uC804\uACF5 \uC218\uD589 \uC870\uC84C\uC9C0? "
+  - dialogueText: "\uC8FC\uC778\uACF5 : \uC9C0\uAE08\uC774\uB77C\uB3C4 \uC5F4\uC2EC\uD788
+      \uB4E4\uC5B4\uC57C\uACA0\uB2E4!\u2019 "
+  dialogueText: {fileID: 701116322}
 --- !u!1 &1177267460
 GameObject:
   m_ObjectHideFlags: 0
@@ -2488,6 +2558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6199e97a4b8039d43b0c2b0cf40ac48a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timerText: {fileID: 0}
   moveSpeed: 7
   gameoverPanel: {fileID: 0}
 --- !u!1 &1591637584
@@ -3137,3 +3208,4 @@ SceneRoots:
   - {fileID: 744709552}
   - {fileID: 1949945512}
   - {fileID: 1177267464}
+  - {fileID: 1161361112}
