@@ -131,4 +131,11 @@ public class BeggingPlayer : MonoBehaviour
             Debug.LogError("Game Over Panel is not assigned!");
         }
     }
+
+    public void LoadNextSceneAfterDelay()
+    {
+        // 타이머 종료 시 Stage2로 전환
+        Debug.Log("Stage1Connection으로 전환합니다.");
+        SceneManager.LoadScene("Stage1Connection");
+    }
 }

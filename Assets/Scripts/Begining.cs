@@ -105,7 +105,7 @@ public class Beginning : MonoBehaviour
         BeggingPlayer beggingPlayer = FindObjectOfType<BeggingPlayer>();
         if (beggingPlayer != null)
         {
-            beggingPlayer.LoadNextSceneAfterDelay();
+           beggingPlayer.LoadNextSceneAfterDelay();
         }
         else
         {
