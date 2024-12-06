@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
-public class Stage3Connection : MonoBehaviour
+
+public class ending : MonoBehaviour
 {
-       // Start is called before the first frame update
     public List<string> dialogues; // 각 대화는 "DialogueText" 형식의 문자열
 
     // UI 요소
     public TextMeshProUGUI dialogueText;
+    public GameObject endingImage; // Ending 이미지 오브젝트
+
+    public GameObject Image; // Ending 이미지 오브젝트
 
     // 대화 진행 상태
     private int currentDialogueIndex = 0;
@@ -21,6 +23,14 @@ public class Stage3Connection : MonoBehaviour
     {
         // 대화 상자 비활성화 (초기 상태)
         dialogueText.gameObject.SetActive(false);
+        if (endingImage != null)
+        {
+            endingImage.SetActive(false); // Ending 이미지 비활성화
+        }
+        else
+        {
+            Debug.LogError("Ending Image is not assigned in the Inspector!");
+        }
 
         // 대화 초기화
         StartCoroutine(InitializeDialogue());
@@ -97,18 +107,28 @@ public class Stage3Connection : MonoBehaviour
 
     IEnumerator EndDialogueSequence()
     {
-        // 모든 대화가 끝난 후 다음 스테이지로 전환하기 전에 잠시 대기
+        // 모든 대화가 끝난 후 잠시 대기
         yield return new WaitForSeconds(1f); // 원하는 대기 시간 설정
 
-        // LoadNextSceneAfterDelay() 메서드 호출
-        LoadNextSceneAfterDelay();
-    }
+        // DialogueText 비활성화
+        if (dialogueText != null)
+        {
+            dialogueText.gameObject.SetActive(false);
+        }
 
+        // Ending 이미지 활성화
+        if (endingImage != null)
+        {
+            endingImage.SetActive(true);
+        }
 
-    private void LoadNextSceneAfterDelay()
-    {
-        // 타이머 종료 시 Stage2로 전환
-        Debug.Log("Ending으로 전환합니다.");
-        SceneManager.LoadScene("Ending");
+        if (Image != null)
+        {
+            Image.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("Ending Image is not assigned in the Inspector!");
+        }
     }
 }
