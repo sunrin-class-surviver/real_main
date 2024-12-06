@@ -10,12 +10,31 @@ public class BeggingPlayer : MonoBehaviour
 
     public GameObject gameoverPanel; // Game Over Panel
 
+<<<<<<< Updated upstream
+=======
+    private Vector2 movement;
+    private Vector2 lastDirection = Vector2.down; // 초기 방향을 아래쪽으로 설정
+
+>>>>>>> Stashed changes
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>(); // Rigidbody2D 컴포넌트를 가져옴
         animator = GetComponent<Animator>(); // Animator 컴포넌트를 가져옴
     }
 
+<<<<<<< Updated upstream
+=======
+    private void Start()
+    {
+        // 초기 애니메이션 파라미터 설정
+        animator.SetBool("IsMoving", false);
+        animator.SetFloat("X", lastDirection.x);
+        animator.SetFloat("Y", lastDirection.y);
+
+        Debug.Log("Start() called. Initial lastDirection: " + lastDirection + ", IsMoving: false");
+    }
+
+>>>>>>> Stashed changes
     private void FixedUpdate()
     {
         if (canMove) // canMove가 true일 때만 이동 가능
@@ -38,17 +57,94 @@ public class BeggingPlayer : MonoBehaviour
     {
         if (animator != null)
         {
+<<<<<<< Updated upstream
             animator.SetFloat("X", moveX);
             animator.SetFloat("Y", moveY);
             animator.SetBool("IsMoving", moveX != 0 || moveY != 0); // 움직이는지 여부
+=======
+            lastDirection = movement; // 마지막 이동 방향 업데이트
+
+            // 모든 트리거 리셋
+            ResetAllTriggers();
+
+            // 대각선 이동 처리: 수평 이동을 우선으로 함
+            if (movement.x != 0)
+            {
+                if (movement.x == -1 && movement.y==0)
+                {
+                    animator.SetTrigger("R"); // 오른쪽 이동 트리거
+                }
+                else if (movement.x == 1 && movement.y==0)
+                {
+                    animator.SetTrigger("L"); // 왼쪽 이동 트리거
+                }
+            }
+            else
+            {
+                if (movement.y == 1 && movement.x==0)
+                {
+                    animator.SetTrigger("B"); // 위로 이동 트리거
+                }
+                else if (movement.y == -1 && movement.x== 0)
+                {
+                    animator.SetTrigger("F"); // 아래로 이동 트리거
+                }
+            }
+
+            animator.SetBool("IsMoving", true); // 이동 상태 설정
+
+            Debug.Log("Animator Parameters - X: " + movement.x + ", Y: " + movement.y + ", IsMoving: true");
+>>>>>>> Stashed changes
         }
         else
         {
+<<<<<<< Updated upstream
             Debug.LogError("Animator is not assigned!");
+=======
+            animator.SetBool("IsMoving", false); // Idle 상태
+            animator.SetFloat("X", lastDirection.x); // 마지막 이동 방향 유지
+            animator.SetFloat("Y", lastDirection.y); // 마지막 이동 방향 유지
+
+            Debug.Log("Animator Parameters - X: " + lastDirection.x + ", Y: " + lastDirection.y + ", IsMoving: false");
+
+            // IsMoving이 false일 때 Idle 상태로 전환
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            {
+                animator.Play("Idle", 0, 0f); // Idle 상태로 애니메이션 재생
+                Debug.Log("Animator transitioned to Idle state.");
+            }
+>>>>>>> Stashed changes
+        }
+
+        // 현재 재생 중인 애니메이션 클립 로그 출력
+        LogCurrentAnimation();
+    }
+
+    // 모든 트리거를 리셋하는 메소드
+    private void ResetAllTriggers()
+    {
+        animator.ResetTrigger("R");
+        animator.ResetTrigger("L");
+        animator.ResetTrigger("F");
+        animator.ResetTrigger("B");
+        animator.ResetTrigger("I"); // 필요 시 추가 트리거도 리셋
+    }
+
+    // 현재 재생 중인 애니메이션 클립을 로그로 출력하는 메소드
+    private void LogCurrentAnimation()
+    {
+        AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+        if (clipInfo.Length > 0)
+        {
+            Debug.Log("Current Animation Clip: " + clipInfo[0].clip.name);
+        }
+        else
+        {
+            Debug.Log("No Animation Clip is currently playing.");
         }
     }
 
-    // 플레이어의 움직임을 멈추는 함수 (1초 동안)
+    // 플레이어의 움직임을 멈추는 함수 (지정된 시간 동안)
     public void FreezePlayerForSeconds(float seconds)
     {
         StartCoroutine(FreezeForDuration(seconds));
@@ -57,8 +153,10 @@ public class BeggingPlayer : MonoBehaviour
     private IEnumerator FreezeForDuration(float duration)
     {
         canMove = false;
+        Debug.Log("Player movement frozen for " + duration + " seconds.");
         yield return new WaitForSeconds(duration);
         canMove = true;
+        Debug.Log("Player movement resumed.");
     }
 
     // 충돌 처리: Bullet이나 BlackBar와 충돌하면 게임 오버
@@ -87,6 +185,7 @@ public class BeggingPlayer : MonoBehaviour
         {
             gameoverPanel.SetActive(true); // Game Over 패널 활성화
             Time.timeScale = 0; // 게임 멈추기
+            Debug.Log("Game Over Panel activated. Time.timeScale set to 0.");
         }
         else
         {
