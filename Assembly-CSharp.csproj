@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Ending.cs" />
+    <Compile Include="Assets\Scripts\CheatKeyHandler.cs" />
     <Compile Include="Assets\Scripts\Stage1Connection.cs" />
     <Compile Include="Assets\Scripts\Stage1Loading.cs" />
     <Compile Include="Assets\Scripts\Stage3Loading.cs" />

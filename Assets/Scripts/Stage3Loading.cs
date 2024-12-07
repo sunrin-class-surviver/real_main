@@ -20,7 +20,7 @@ public class Stage3Loading : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // 필요 시 업데이트 로직 추가
+        CheatKeyHandler.CheckCheatKeys();
     }
 
     private IEnumerator LoadNextSceneAfterDelayCoroutine()

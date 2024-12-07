@@ -43,6 +43,8 @@ public class Stage2Connection : MonoBehaviour
                 DisplayNextDialogue();
             }
         }
+
+       CheatKeyHandler.CheckCheatKeys();
     }
 
     IEnumerator InitializeDialogue()
