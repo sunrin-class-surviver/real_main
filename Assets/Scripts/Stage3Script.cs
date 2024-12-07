@@ -26,7 +26,7 @@ public class Stage3Manager : MonoBehaviour
     {
         ShowRandomImageAndBlackBar();
         InvokeRepeating(nameof(SpawnJS), 0f, spawnInterval); // JS를 일정 간격으로 생성
-        StartCoroutine(LoadNextSceneAfterDelay(10f));
+        StartCoroutine(LoadNextSceneAfterDelay(1f));
     }
 
      IEnumerator LoadNextSceneAfterDelay(float delay)
@@ -46,8 +46,8 @@ public class Stage3Manager : MonoBehaviour
         }
 
         // 타이머 종료 시 Stage2로 전환
-        Debug.Log("Stage2Connection으로 전환합니다.");
-        SceneManager.LoadScene("Stage2Connection");
+        Debug.Log("ending 전환합니다.");
+        SceneManager.LoadScene("Ending");
     }
 
     // 이미지와 검정색 영역을 랜덤으로 보여주는 함수
