@@ -3111,6 +3111,9 @@ MonoBehaviour:
   spawnY: 4.32
   fallSpeed: 6
   spawnCount: 3
+  initClip: {fileID: 8300000, guid: 6f9e1ed6c233f2943aac63572903cc39, type: 3}
+  battleClip: {fileID: 8300000, guid: 8b021e41c9032bb4d9b9612637816611, type: 3}
+  dieClip: {fileID: 8300000, guid: f421d153ce0f1bb4494702e0ea6f19b7, type: 3}
 --- !u!4 &1962934191
 Transform:
   m_ObjectHideFlags: 0

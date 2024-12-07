@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -25,6 +24,10 @@ public class Player : MonoBehaviour
     {
         animator.SetFloat("X", 0);
         animator.SetFloat("Y", -1); // 기본 방향을 Back으로 설정하려면 -1로 초기화
+        if (gameoverPanel != null)
+        {
+            gameoverPanel.SetActive(false); // 게임 시작 시 Game Over 패널 비활성화
+        }
     }
 
     private void FixedUpdate()
@@ -72,7 +75,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // 플레이어의 움직임을 멈추는 함수 (1초 동안)
+    // 플레이어의 움직임을 멈추는 함수 (지정된 시간 동안)
     public void FreezePlayerForSeconds(float seconds)
     {
         StartCoroutine(FreezeForDuration(seconds));
@@ -122,6 +125,12 @@ public class Player : MonoBehaviour
         {
             gameoverPanel.SetActive(true); // Game Over 패널 활성화
             Time.timeScale = 0; // 게임 멈추기
+
+            // 'die' 오디오 재생
+            AudioHelper.PlayDieAudio();
+
+            // 5초 후에 자동으로 게임을 다시 시작하도록 Coroutine 시작
+            StartCoroutine(RestartAfterDelay(5f));
         }
         else
         {
@@ -129,22 +138,20 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Update 메서드 추가: Game Over 패널이 활성화된 상태에서 Enter 키 입력을 감지
-    private void Update()
+    // 5초 후에 "Beginning" 씬으로 전환하는 Coroutine
+    private IEnumerator RestartAfterDelay(float delay)
     {
-        if (gameoverPanel != null && gameoverPanel.activeSelf)
-        {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                RestartGame();
-            }
-        }
+        yield return new WaitForSecondsRealtime(delay); // Time.timeScale이 0이므로 real time 사용
+
+        // 씬을 다시 시작하기 전에 게임 시간 복구
+        Time.timeScale = 1;
+
+        // 'Beginning' 씬으로 로드
+        SceneManager.LoadScene("Beginning");
+
+        // 'init' 오디오 재생
+        AudioHelper.PlayInitAudio();
     }
 
-    // 게임을 다시 시작하는 함수: "Beginning" 씬으로 로드
-    private void RestartGame()
-    {
-        Time.timeScale = 1; // 시간 스케일 복구
-        SceneManager.LoadScene("Beginning"); // "Beginning" 씬으로 로드
-    }
+    // Update 메서드 제거: Enter 키 관련 로직 삭제
 }

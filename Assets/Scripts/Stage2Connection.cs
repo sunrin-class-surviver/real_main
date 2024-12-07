@@ -17,8 +17,18 @@ public class Stage2Connection : MonoBehaviour
     private bool isTyping = false;
     private Coroutine typingCoroutine;
 
+     public AudioClip initClip;
+    public AudioClip battleClip;
+    public AudioClip dieClip; // die 오디오 클립 추가
+
+    public AudioClip audioClip;
+
     void Start()
     {
+        AudioHelper.Initialize(initClip, battleClip, dieClip, audioClip);
+
+        // 'battle' 오디오 재생
+        AudioHelper.PlayInitAudio();
         // 대화 상자 비활성화 (초기 상태)
         dialogueText.gameObject.SetActive(false);
 
@@ -28,6 +38,11 @@ public class Stage2Connection : MonoBehaviour
 
     void Update()
     {
+
+       
+
+        // 'battle' 오디오 재생
+        AudioHelper.PlayInitAudio();
         // 대화가 활성화된 상태에서 Enter 키를 누르면 다음 대사로 진행
         if (isDialogueActive && Input.GetKeyDown(KeyCode.Return))
         {

@@ -10,9 +10,20 @@ public class Stage3Loading : MonoBehaviour
     [SerializeField]
     private float time = 5f;
 
+      public AudioClip initClip;
+    public AudioClip battleClip;
+    public AudioClip dieClip; // die 오디오 클립 추가
+    public AudioClip audioClip;
+
+
     // Start is called before the first frame update
     void Start()
     {
+
+        AudioHelper.Initialize(initClip, battleClip, dieClip, audioClip);
+
+        // 'battle' 오디오 재생
+        AudioHelper.PlayInitAudio();
         // LoadNextSceneAfterDelay 코루틴 시작
         StartCoroutine(LoadNextSceneAfterDelayCoroutine());
     }

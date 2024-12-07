@@ -36,6 +36,12 @@ public class Stage2Script : MonoBehaviour
 
     public TextMeshProUGUI timerText;
 
+    public AudioClip initClip;
+    public AudioClip battleClip;
+    public AudioClip audioClip;
+    public AudioClip dieClip; // die 오디오 클립 추가
+
+
     // 총알 생성 상태
     private bool isSpawningBasicBullets = false;
     private bool isSpawningSpecialBullets = false;
@@ -54,6 +60,10 @@ public class Stage2Script : MonoBehaviour
 
     void Start()
     {
+        AudioHelper.Initialize(initClip, battleClip, dieClip, audioClip);
+
+        // 'battle' 오디오 재생
+        AudioHelper.PlayBattleAudio();
         // 기본 총알 및 특수 총알 생성 시작 여부 설정
         isSpawningBasicBullets = true;
         isSpawningSpecialBullets = true;

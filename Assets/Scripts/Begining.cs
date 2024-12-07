@@ -24,12 +24,23 @@ public class Beginning : MonoBehaviour
     private bool isTyping = false;
     private Coroutine typingCoroutine;
 
+    public AudioClip initClip;
+    public AudioClip battleClip;
+    public AudioClip dieClip; // die 오디오 클립 추가
+    public AudioClip audioClip;
+
+
     void Start()
     {
         // 대화 상자 비활성화 (초기 상태)
         dialogueText.gameObject.SetActive(false);
         // 대화 초기화
         StartCoroutine(InitializeDialogue());
+
+         AudioHelper.Initialize(initClip, battleClip, dieClip, audioClip);
+
+        // 'battle' 오디오 재생
+        AudioHelper.PlayInitAudio();
     }
 
     void Update()

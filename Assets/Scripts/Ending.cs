@@ -19,6 +19,12 @@ public class ending : MonoBehaviour
     private bool isTyping = false;
     private Coroutine typingCoroutine;
 
+    public AudioClip initClip;
+    public AudioClip battleClip;
+    public AudioClip dieClip; // die 오디오 클립 추가
+
+    public AudioClip audioClip;
+
     void Start()
     {
         // 대화 상자 비활성화 (초기 상태)
@@ -32,6 +38,10 @@ public class ending : MonoBehaviour
             Debug.LogError("Ending Image is not assigned in the Inspector!");
         }
 
+        AudioHelper.Initialize(initClip, battleClip, dieClip, audioClip);
+
+        // 'battle' 오디오 재생
+        AudioHelper.PlayInitAudio();
         // 대화 초기화
         StartCoroutine(InitializeDialogue());
     }
@@ -54,7 +64,7 @@ public class ending : MonoBehaviour
             }
         }
 
-         CheatKeyHandler.CheckCheatKeys();
+        CheatKeyHandler.CheckCheatKeys();
     }
 
     IEnumerator InitializeDialogue()
@@ -110,7 +120,10 @@ public class ending : MonoBehaviour
     IEnumerator EndDialogueSequence()
     {
         // 모든 대화가 끝난 후 잠시 대기
-        yield return new WaitForSeconds(1f); // 원하는 대기 시간 설정
+        yield return new WaitForSeconds(0.1f); // 원하는 대기 시간 설정
+
+        AudioHelper.PlayGameFinishAudio();
+
 
         // DialogueText 비활성화
         if (dialogueText != null)

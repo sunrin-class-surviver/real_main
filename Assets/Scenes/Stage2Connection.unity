@@ -297,6 +297,9 @@ MonoBehaviour:
   dialogueText: {fileID: 0}
   endingImage: {fileID: 0}
   Image: {fileID: 0}
+  initClip: {fileID: 0}
+  battleClip: {fileID: 0}
+  dieClip: {fileID: 0}
 --- !u!4 &154329684
 Transform:
   m_ObjectHideFlags: 0
@@ -2363,6 +2366,9 @@ MonoBehaviour:
   - "\uC8FC\uC778\uACF5 : \uC774\uD574\uD560 \uC218 \uC788\uC5B4\uC694!!"
   - "\uC7A5\uAD11\uC7AC \uC120\uC0DD\uB2D8 : \uADF8\uB807\uC9C0...? \uBBFF\uC5B4\uBCFC\uAC8C~~~"
   dialogueText: {fileID: 1392949623}
+  initClip: {fileID: 8300000, guid: 6f9e1ed6c233f2943aac63572903cc39, type: 3}
+  battleClip: {fileID: 8300000, guid: 8b021e41c9032bb4d9b9612637816611, type: 3}
+  dieClip: {fileID: 8300000, guid: f421d153ce0f1bb4494702e0ea6f19b7, type: 3}
 --- !u!1 &1362141945
 GameObject:
   m_ObjectHideFlags: 0

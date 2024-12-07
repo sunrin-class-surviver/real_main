@@ -343,6 +343,9 @@ MonoBehaviour:
   - "\uC8FC\uC778\uACF5 : \uC774\uD574\uD560 \uC218 \uC788\uC5B4\uC694!!"
   - "\uC7A5\uAD11\uC7AC \uC120\uC0DD\uB2D8 : \uADF8\uB807\uC9C0...? \uBBFF\uC5B4\uBCFC\uAC8C~~~"
   dialogueText: {fileID: 0}
+  initClip: {fileID: 0}
+  battleClip: {fileID: 0}
+  dieClip: {fileID: 0}
 --- !u!4 &155136732
 Transform:
   m_ObjectHideFlags: 0
@@ -793,6 +796,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 5
+<<<<<<< Updated upstream
 --- !u!1 &1933765137
 GameObject:
   m_ObjectHideFlags: 0
@@ -868,6 +872,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1933765137}
   m_CullTransparentMesh: 1
+=======
+  initClip: {fileID: 8300000, guid: 6f9e1ed6c233f2943aac63572903cc39, type: 3}
+  battleClip: {fileID: 8300000, guid: 8b021e41c9032bb4d9b9612637816611, type: 3}
+  dieClip: {fileID: 8300000, guid: f421d153ce0f1bb4494702e0ea6f19b7, type: 3}
+>>>>>>> Stashed changes
 --- !u!1 &2101762093
 GameObject:
   m_ObjectHideFlags: 0

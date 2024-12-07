@@ -2620,6 +2620,10 @@ MonoBehaviour:
   dialogueText: {fileID: 1572505732}
   endingImage: {fileID: 327064580}
   Image: {fileID: 1102688926}
+  initClip: {fileID: 8300000, guid: 6f9e1ed6c233f2943aac63572903cc39, type: 3}
+  battleClip: {fileID: 8300000, guid: 8b021e41c9032bb4d9b9612637816611, type: 3}
+  dieClip: {fileID: 8300000, guid: f421d153ce0f1bb4494702e0ea6f19b7, type: 3}
+  audioClip: {fileID: 8300000, guid: ba28e7f92ed6092439256ef8fc0625f8, type: 3}
 --- !u!4 &1237801176
 Transform:
   m_ObjectHideFlags: 0

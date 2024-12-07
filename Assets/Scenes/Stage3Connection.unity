@@ -1552,6 +1552,9 @@ MonoBehaviour:
   - "\uC774\uC655\uB82C \uC120\uC0DD\uB2D8 : \uC790 \uC218\uC5C5 \uC2DC\uC791\uD560\uAC8C\uC694.
     \uB2E4\uB4E4 \uD074\uB798\uC2A4\uB8F8 \uC811\uC18D\uD574\uBCF4\uC790"
   dialogueText: {fileID: 111806505}
+  initClip: {fileID: 8300000, guid: 6f9e1ed6c233f2943aac63572903cc39, type: 3}
+  battleClip: {fileID: 8300000, guid: 8b021e41c9032bb4d9b9612637816611, type: 3}
+  dieClip: {fileID: 8300000, guid: f421d153ce0f1bb4494702e0ea6f19b7, type: 3}
 --- !u!1 &1051722963
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,8 +14,19 @@ public class Stage1Script : MonoBehaviour
     private Vector3 horizontalStartPosition;
     private List<GameObject> currentBullets = new List<GameObject>();
 
+    public AudioClip initClip;
+    public AudioClip battleClip;
+    public AudioClip dieClip; // die 오디오 클립 추가
+
+    public AudioClip audioClip;
+
+
     void Start()
     {
+        AudioHelper.Initialize(initClip, battleClip, dieClip, audioClip);
+
+        // 'battle' 오디오 재생
+        AudioHelper.PlayBattleAudio();
         horizontalStartPosition = spawnPoint.position;
         StartCoroutine(GenerateHorizontalLine());
         StartCoroutine(LoadNextSceneAfterDelay(10f));

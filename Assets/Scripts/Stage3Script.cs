@@ -21,9 +21,20 @@ public class Stage3Manager : MonoBehaviour
     public float fallSpeed = 2f; // JS가 떨어지는 속도
     public int spawnCount = 3; // 한 번에 생성할 JS 개수
 
+    public AudioClip initClip;
+    public AudioClip battleClip;
+    public AudioClip dieClip; // die 오디오 클립 추가
+
+    public AudioClip audioClip;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        AudioHelper.Initialize(initClip, battleClip, dieClip, audioClip);
+
+        // 'battle' 오디오 재생
+        AudioHelper.PlayBattleAudio();
         ShowRandomImageAndBlackBar();
         InvokeRepeating(nameof(SpawnJS), 0f, spawnInterval); // JS를 일정 간격으로 생성
         StartCoroutine(LoadNextSceneAfterDelay(1f));
