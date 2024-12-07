@@ -59,13 +59,15 @@
     <UnityVersion>2022.3.52f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\jshar\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.0.5\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\moony\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.0.5\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.52f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.52f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Ending.cs" />
     <Compile Include="Assets\Scripts\Stage1Connection.cs" />
+    <Compile Include="Assets\Scripts\Stage1Loading.cs" />
+    <Compile Include="Assets\Scripts\Stage3Loading.cs" />
     <Compile Include="Assets\Scripts\IfScript.cs" />
     <Compile Include="Assets\Scripts\WhileScript.cs" />
     <Compile Include="Assets\Scripts\C_Bullet.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="Assets\Scripts\Begining.cs" />
     <Compile Include="Assets\Scripts\Maincamera.cs" />
     <Compile Include="Assets\Scripts\BulletSpawner.cs" />
+    <Compile Include="Assets\Scripts\Stage2Loading.cs" />
     <Compile Include="Assets\Scripts\Stage3JS.cs" />
     <Compile Include="Assets\Scripts\BeggingPlayer.cs" />
     <Compile Include="Assets\Scripts\ForScript.cs" />

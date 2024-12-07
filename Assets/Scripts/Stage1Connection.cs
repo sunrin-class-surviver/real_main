@@ -107,7 +107,7 @@ public class Stage1Connection : MonoBehaviour
     private void LoadNextSceneAfterDelay()
     {
         // Stage1으로 전환
-        Debug.Log("Stage1으로 전환합니다.");
-        SceneManager.LoadScene("Stage1");
+        Debug.Log("Stage1loading으로 전환합니다.");
+        SceneManager.LoadScene("Stage1Loading");
     }
 }

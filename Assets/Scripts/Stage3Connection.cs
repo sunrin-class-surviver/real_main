@@ -109,6 +109,6 @@ public class Stage3Connection : MonoBehaviour
     {
         // 타이머 종료 시 Stage2로 전환
         Debug.Log("stage3로 전환합니다.");
-        SceneManager.LoadScene("stage3");
+        SceneManager.LoadScene("Stage3Loading");
     }
 }
