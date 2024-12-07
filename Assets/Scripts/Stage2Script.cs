@@ -90,12 +90,15 @@ public class Stage2Script : MonoBehaviour
             }
 
             remainingTime -= Time.deltaTime;
+
+             CheatKeyHandler.CheckCheatKeys();
             yield return null; // 프레임마다 실행
         }
 
         // 타이머 종료 시 Stage3로 전환
         Debug.Log("Stage3Connection로 전환합니다.");
         SceneManager.LoadScene("Stage3Connection");
+
     }
 
     // 타이머 재설정 함수 (40초로 강제 설정)

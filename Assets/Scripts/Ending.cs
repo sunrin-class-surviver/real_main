@@ -53,6 +53,8 @@ public class ending : MonoBehaviour
                 DisplayNextDialogue();
             }
         }
+
+         CheatKeyHandler.CheckCheatKeys();
     }
 
     IEnumerator InitializeDialogue()

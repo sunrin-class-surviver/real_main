@@ -42,6 +42,7 @@ public class Stage3Manager : MonoBehaviour
             }
 
             remainingTime -= Time.deltaTime;
+            CheatKeyHandler.CheckCheatKeys();
             yield return null; // 프레임마다 실행
         }
 

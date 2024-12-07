@@ -49,6 +49,8 @@ public class Beginning : MonoBehaviour
                 DisplayNextDialogue();
             }
         }
+         CheatKeyHandler.CheckCheatKeys();
+         
     }
 
     IEnumerator InitializeDialogue()
