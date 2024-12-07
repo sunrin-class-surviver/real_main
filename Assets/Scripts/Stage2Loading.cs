@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Stage1Loading : MonoBehaviour
+public class Stage2Loading : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
