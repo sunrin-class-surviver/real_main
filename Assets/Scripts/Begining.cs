@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using TMPro;
 
@@ -37,7 +38,7 @@ public class Beginning : MonoBehaviour
         // 대화 초기화
         StartCoroutine(InitializeDialogue());
 
-         AudioHelper.Initialize(initClip, battleClip, dieClip, audioClip);
+        AudioHelper.Initialize(initClip, battleClip, dieClip, audioClip);
 
         // 'battle' 오디오 재생
         AudioHelper.PlayInitAudio();
@@ -115,14 +116,9 @@ public class Beginning : MonoBehaviour
         yield return new WaitForSeconds(1f); // 원하는 대기 시간 설정
 
         // BeggingPlayer 스크립트의 LoadNextStage() 호출
-        BeggingPlayer beggingPlayer = FindObjectOfType<BeggingPlayer>();
-        if (beggingPlayer != null)
-        {
-           beggingPlayer.LoadNextSceneAfterDelay();
-        }
-        else
-        {
-            Debug.LogError("BeggingPlayer 스크립트를 찾을 수 없습니다.");
-        }
+        Debug.Log("Stage1Connection으로 전환합니다.");
+          SceneManager.LoadScene("Stage1Connection");
     }
+
+     
 }
