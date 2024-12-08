@@ -37,7 +37,7 @@ public class Stage3Manager : MonoBehaviour
         AudioHelper.PlayBattleAudio();
         ShowRandomImageAndBlackBar();
         InvokeRepeating(nameof(SpawnJS), 0f, spawnInterval); // JS를 일정 간격으로 생성
-        StartCoroutine(LoadNextSceneAfterDelay(1f));
+        StartCoroutine(LoadNextSceneAfterDelay(40f));
     }
 
      IEnumerator LoadNextSceneAfterDelay(float delay)

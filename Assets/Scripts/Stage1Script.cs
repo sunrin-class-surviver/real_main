@@ -29,7 +29,7 @@ public class Stage1Script : MonoBehaviour
         AudioHelper.PlayBattleAudio();
         horizontalStartPosition = spawnPoint.position;
         StartCoroutine(GenerateHorizontalLine());
-        StartCoroutine(LoadNextSceneAfterDelay(10f));
+        StartCoroutine(LoadNextSceneAfterDelay(40f));
     }
      IEnumerator LoadNextSceneAfterDelay(float delay)
     {

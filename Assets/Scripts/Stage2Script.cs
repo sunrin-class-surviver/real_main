@@ -48,7 +48,7 @@ public class Stage2Script : MonoBehaviour
     private bool isSpecialBulletFunctionRunning = false; // 특수 기능 실행 중 여부
 
     // 타이머 관련 변수
-    private float remainingTime = 10f; // 초기 타이머 값
+    private float remainingTime = 40f; // 초기 타이머 값
     private Coroutine timerCoroutine;
 
     // Coroutine 핸들
