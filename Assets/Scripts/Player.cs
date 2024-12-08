@@ -24,10 +24,10 @@ public class Player : MonoBehaviour
     {
         animator.SetFloat("X", 0);
         animator.SetFloat("Y", -1); // 기본 방향을 Back으로 설정하려면 -1로 초기화
-        if (gameoverPanel != null)
-        {
-            gameoverPanel.SetActive(false); // 게임 시작 시 Game Over 패널 비활성화
-        }
+        // if (gameoverPanel != null)
+        // {
+        //     gameoverPanel.SetActive(false); // 게임 시작 시 Game Over 패널 비활성화
+        // }
     }
 
     private void FixedUpdate()
@@ -154,4 +154,14 @@ public class Player : MonoBehaviour
     }
 
     // Update 메서드 제거: Enter 키 관련 로직 삭제
+
+    private void OnEnable()
+{
+    Debug.Log("Player is Enabled!");
+}
+
+private void OnDisable()
+{
+    Debug.Log("Player is Disabled!");
+}
 }

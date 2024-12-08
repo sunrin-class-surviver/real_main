@@ -3236,6 +3236,7 @@ MonoBehaviour:
   initClip: {fileID: 0}
   battleClip: {fileID: 0}
   dieClip: {fileID: 0}
+  audioClip: {fileID: 0}
 --- !u!4 &1939266940
 Transform:
   m_ObjectHideFlags: 0
@@ -3448,6 +3449,7 @@ MonoBehaviour:
   initClip: {fileID: 8300000, guid: 6f9e1ed6c233f2943aac63572903cc39, type: 3}
   battleClip: {fileID: 8300000, guid: 8b021e41c9032bb4d9b9612637816611, type: 3}
   dieClip: {fileID: 8300000, guid: f421d153ce0f1bb4494702e0ea6f19b7, type: 3}
+  audioClip: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
