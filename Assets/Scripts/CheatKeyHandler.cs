@@ -39,6 +39,9 @@ public static class CheatKeyHandler
     /// <param name="keyNumber">키 번호 (0-10)</param>
     private static void LoadSceneByKey(int keyNumber)
     {
+        // Time.timeScale을 1로 설정하여 시간 흐름을 정상화
+        Time.timeScale = 1f;
+
         string sceneName = GetSceneNameByKey(keyNumber);
         if (string.IsNullOrEmpty(sceneName))
         {

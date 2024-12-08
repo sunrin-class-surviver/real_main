@@ -13,7 +13,8 @@ public class IfScript : MonoBehaviour
 
     void Start()
     {
-        excludedSectionX = Random.Range(0, 3);
+        excludedSectionX = Random.Range(0, 3); // 0: 좌, 1: 중, 2: 우
+        Debug.Log("제외된 섹션: " + excludedSectionX);
         StartCoroutine(SpawnCShapedBulletsInSections());
 
         // 2초 뒤에 StopBulletGeneration 호출
@@ -47,11 +48,16 @@ public class IfScript : MonoBehaviour
     {
         for (int i = 0; i < 10; i++)
         {
-            float spawnY = Camera.main.orthographicSize + i * 2f;
-            float spawnX = Mathf.Lerp(xPos - 3f, xPos + 3f, (i % 10) / 9f);
+            float spawnY = screenTopY + i * 2f; // 화면 상단부터 총알 생성
+            // 각 섹션 간 충분한 간격 확보
+            float spawnX = Mathf.Lerp(xPos - 3f, xPos + 3f, i / 9f); 
             Vector3 spawnPosition = new Vector3(spawnX, spawnY, 0f);
 
+            Debug.Log($"총알 생성 위치: {spawnPosition}");
+
             GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+            // 총알에 "Bullet" 태그 부여 (인스펙터에서 미리 설정 가능)
+            bullet.tag = "Bullet";
             StartCoroutine(MoveBulletDown(bullet, 30f));
         }
     }
@@ -59,7 +65,7 @@ public class IfScript : MonoBehaviour
     // 총알이 아래로 내려가는 함수
     IEnumerator MoveBulletDown(GameObject bullet, float fallSpeed)
     {
-        while (bullet.transform.position.y > -10f)
+        while (bullet.transform.position.y > screenBottomY)
         {
             bullet.transform.position += Vector3.down * fallSpeed * Time.deltaTime;
             yield return null;
@@ -70,13 +76,13 @@ public class IfScript : MonoBehaviour
     // 총알 생성을 멈추는 함수
     public void StopBulletGeneration()
     {
-        Debug.Log("Stopping all continuous bullets!");
+        Debug.Log("모든 총알 생성을 중지합니다!");
 
-        // 총알 생성 중지: 현재 활성화된 총알들을 비활성화하거나 제거
-        foreach (var bullet in GetComponentsInChildren<Bullet>())
+        // "Bullet" 태그를 가진 모든 오브젝트를 찾아서 삭제
+        GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
+        foreach (var bullet in bullets)
         {
-            // 예시: 총알들을 비활성화하거나 제거
-            Destroy(bullet.gameObject);
+            Destroy(bullet);
         }
 
         // 추가적으로 다른 멈춤 처리 필요 시 구현
